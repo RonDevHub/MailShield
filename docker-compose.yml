@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  mailshield:
+    image: ghcr.io/rondevhub/mailshield:latest
+    container_name: mailshield
+    restart: always
+    environment:
+      - APP_KEY=base64:EchtStarkerSchluesselHierEinsetzen
+      - DB_TYPE=sqlite
+    volumes:
+      - ./data:/var/www/html/data
+      - ./config/config.php:/var/www/html/config/config.php
+    
