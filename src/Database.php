@@ -2,31 +2,47 @@
 namespace App;
 
 use PDO;
+use Exception;
 
 class Database {
     private static $instance = null;
 
     public static function getInstance($config) {
         if (self::$instance === null) {
-            $type = getenv('DB_TYPE') ?: $config['db_type'];
+            // Typ bestimmen: ENV -> Config -> Default 'sqlite'
+            $type = getenv('DB_TYPE') ?: ($config['db_type'] ?? 'sqlite');
             
-            if ($type === 'sqlite') {
-                $path = getenv('DB_PATH') ?: $config['db_configs']['sqlite'];
-                // Verzeichnis erstellen falls nicht existent
-                if (!file_exists(dirname($path))) { mkdir(dirname($path), 0755, true); }
-                $dsn = "sqlite:$path";
-                self::$instance = new PDO($dsn);
-            } else {
-                $m = $config['db_configs']['mysql'];
-                $host = getenv('DB_HOST') ?: $m['host'];
-                $name = getenv('DB_NAME') ?: $m['name'];
-                $user = getenv('DB_USER') ?: $m['user'];
-                $pass = getenv('DB_PASS') ?: $m['pass'];
-                $dsn = "mysql:host=$host;dbname=$name;charset=utf8mb4";
-                self::$instance = new PDO($dsn, $user, $pass);
+            try {
+                if ($type === 'sqlite') {
+                    // Pfad bestimmen: ENV -> Config -> Absoluter Standard-Pfad
+                    $path = getenv('DB_PATH') ?: ($config['db_configs']['sqlite'] ?? __DIR__ . '/../data/database.sqlite');
+                    
+                    $dir = dirname($path);
+                    if (!file_exists($dir)) { 
+                        mkdir($dir, 0755, true); 
+                    }
+                    
+                    $dsn = "sqlite:$path";
+                    self::$instance = new PDO($dsn);
+                } else {
+                    // MySQL Logik
+                    $host = getenv('DB_HOST') ?: ($config['db_configs']['mysql']['host'] ?? 'localhost');
+                    $name = getenv('DB_NAME') ?: ($config['db_configs']['mysql']['name'] ?? 'mailshield');
+                    $user = getenv('DB_USER') ?: ($config['db_configs']['mysql']['user'] ?? 'root');
+                    $pass = getenv('DB_PASS') ?: ($config['db_configs']['mysql']['pass'] ?? '');
+                    
+                    $dsn = "mysql:host=$host;dbname=$name;charset=utf8mb4";
+                    self::$instance = new PDO($dsn, $user, $pass);
+                }
+
+                // FEHLER BEHOBEN: ATTR_ERRMODE auf ERRMODE_EXCEPTION setzen
+                self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                self::initSchema($type);
+
+            } catch (Exception $e) {
+                // Wenn dein 12GB Laptop hier aufgibt, wollen wir wissen warum
+                die("Datenbank-Fehler: " . $e->getMessage());
             }
-            self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ATTR_ERRMODE_EXCEPTION);
-            self::initSchema($type);
         }
         return self::$instance;
     }
