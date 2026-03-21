@@ -1,0 +1,16 @@
+{
+    "title": "MailShield",
+    "subtitle": "Schütze deine E-Mail vor Bots & Scrapern",
+    "input_placeholder": "Deine E-Mail Adresse...",
+    "btn_protect": "E-Mail schützen",
+    "how_it_works": "Wie es funktioniert",
+    "step1": "Gib deine E-Mail oben ein.",
+    "step2": "Erhalte einen verschlüsselten Link.",
+    "step3": "Nutze den Link auf deiner Webseite. Besucher müssen erst ein Captcha lösen.",
+    "stats_prefix": "Bereits",
+    "stats_suffix": "E-Mails geschützt",
+    "online_since": "Online seit",
+    "copy_success": "Kopiert!",
+    "support_me": "Unterstütze dieses Projekt",
+    "darkmode": "Modus wechseln"
+}
