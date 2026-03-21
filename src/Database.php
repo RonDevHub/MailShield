@@ -9,23 +9,29 @@ class Database {
 
     public static function getInstance($config) {
         if (self::$instance === null) {
-            // Typ bestimmen: ENV -> Config -> Default 'sqlite'
             $type = getenv('DB_TYPE') ?: ($config['db_type'] ?? 'sqlite');
             
             try {
                 if ($type === 'sqlite') {
-                    // Pfad bestimmen: ENV -> Config -> Absoluter Standard-Pfad
-                    $path = getenv('DB_PATH') ?: ($config['db_configs']['sqlite'] ?? __DIR__ . '/../data/database.sqlite');
-                    
-                    $dir = dirname($path);
-                    if (!file_exists($dir)) { 
-                        mkdir($dir, 0755, true); 
+                    // Wir erzwingen den Pfad im /data Verzeichnis des Containers
+                    $dbFile = 'database.sqlite';
+                    $dataDir = '/var/www/html/data';
+                    $path = $dataDir . '/' . $dbFile;
+
+                    // 1. Prüfen ob Verzeichnis existiert, sonst erstellen
+                    if (!is_dir($dataDir)) {
+                        mkdir($dataDir, 0775, true);
                     }
-                    
+
+                    // 2. WICHTIG: Prüfen ob das Verzeichnis beschreibbar ist
+                    if (!is_writable($dataDir)) {
+                        throw new Exception("Das Verzeichnis $dataDir ist nicht beschreibbar. Prüfe die Docker-Rechte!");
+                    }
+
                     $dsn = "sqlite:$path";
                     self::$instance = new PDO($dsn);
+                    
                 } else {
-                    // MySQL Logik
                     $host = getenv('DB_HOST') ?: ($config['db_configs']['mysql']['host'] ?? 'localhost');
                     $name = getenv('DB_NAME') ?: ($config['db_configs']['mysql']['name'] ?? 'mailshield');
                     $user = getenv('DB_USER') ?: ($config['db_configs']['mysql']['user'] ?? 'root');
@@ -35,13 +41,12 @@ class Database {
                     self::$instance = new PDO($dsn, $user, $pass);
                 }
 
-                // FEHLER BEHOBEN: ATTR_ERRMODE auf ERRMODE_EXCEPTION setzen
                 self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 self::initSchema($type);
 
             } catch (Exception $e) {
-                // Wenn dein 12GB Laptop hier aufgibt, wollen wir wissen warum
-                die("Datenbank-Fehler: " . $e->getMessage());
+                // Wir geben eine klare Fehlermeldung aus
+                die("❌ MailShield Datenbank-Fehler: " . $e->getMessage());
             }
         }
         return self::$instance;
