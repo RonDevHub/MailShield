@@ -7,11 +7,10 @@ require_once __DIR__ . '/../src/Encryption.php';
 require_once __DIR__ . '/../src/Utils.php';
 require_once __DIR__ . '/../src/Captcha.php';
 
-// 2. Hybrid-Konfiguration (ENV hat Vorrang vor config.php)
+// 2. Hybrid-Konfiguration
 $configFile = __DIR__ . '/../config/config.php';
 $localConfig = file_exists($configFile) ? require $configFile : [];
 
-// Wir führen die lokale Config mit den ENV-Defaults zusammen
 $config = array_merge([
     'app_name'     => getenv('APP_NAME') ?: 'MailShield',
     'app_key'      => getenv('APP_KEY') ?: 'base64:3fS8kL9zP2mR5vX1nQ0wY7tJ4hB6aC9dE2fG5hJ8kL=',
@@ -28,25 +27,33 @@ $db = \App\Database::getInstance($config);
 $enc = new \App\Encryption($config['app_key']);
 $captcha = new \App\Captcha($config);
 
-// 4. Sprachen & Übersetzungen
+// 4. Sprachen-Logik (Korrektur für die Warning)
+if (isset($_GET['lang'])) {
+    $_SESSION['lang'] = in_array($_GET['lang'], $config['languages']) ? $_GET['lang'] : $config['default_lang'];
+}
 $langCode = $_SESSION['lang'] ?? \App\Utils::getBrowserLang($config['languages']);
-$langPath = __DIR__ . "/../config/languages/{$langCode}.json";
+$_SESSION['lang'] = $langCode;
 
+$langPath = __DIR__ . "/../config/languages/{$langCode}.json";
 if (file_exists($langPath)) {
     $lang = json_decode(file_get_contents($langPath), true);
 } else {
-    // Notfall-Fallback, falls die Sprachdateien im Mount fehlen
+    // Notfall-Fallback mit ALLEN nötigen Keys für layout.php
     $lang = [
         'subtitle' => 'E-Mail Protection',
         'input_placeholder' => 'E-Mail address...',
         'btn_protect' => 'Protect Now',
-        'step1' => 'Enter Mail', 'step2' => 'Get Link', 'step3' => 'Safe!'
+        'step1' => 'Enter Mail', 'step2' => 'Get Link', 'step3' => 'Safe!',
+        'stats_suffix' => 'E-Mails successfully shielded'
     ];
 }
 
 // 5. Routing Logik
 $path = $_GET['path'] ?? '';
 $action = $_GET['action'] ?? '';
+$error = null;
+$slug = null;
+$displayEmail = null;
 
 // AKTION: E-Mail schützen
 if ($action === 'protect' && $_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -56,7 +63,7 @@ if ($action === 'protect' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $stmt = $db->prepare("SELECT slug FROM shielded_mails WHERE email_hash = ?");
         $stmt->execute([$hash]);
-        $existing = $stmt->fetch();
+        $existing = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         if ($existing) {
             $slug = $existing['slug'];
@@ -75,26 +82,25 @@ if ($action === 'protect' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 // VIEW: E-Mail anzeigen (Slug-Check)
 elseif (preg_match('/^v\/([a-zA-Z0-9]+)$/', $path, $matches)) {
     $slug = $matches[1];
-    
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && $captcha->validate($_POST)) {
         $stmt = $db->prepare("SELECT email_encrypted FROM shielded_mails WHERE slug = ?");
         $stmt->execute([$slug]);
-        $res = $stmt->fetch();
+        $res = $stmt->fetch(\PDO::FETCH_ASSOC);
         $displayEmail = $res ? $enc->decrypt($res['email_encrypted']) : 'Nicht gefunden';
         $view = 'display'; 
     } else {
         $view = 'captcha_verify';
     }
 } 
-// DEFAULT: Startseite
 else {
     $view = 'home';
 }
 
-// 6. Statistiken für den Footer
+// 6. Statistiken für den Footer (Fix für den Zähler)
 try {
     $statsStmt = $db->query("SELECT COUNT(*) as total FROM shielded_mails");
-    $totalShielded = $statsStmt->fetch()['total'];
+    $statsRow = $statsStmt->fetch(\PDO::FETCH_ASSOC);
+    $totalShielded = $statsRow['total'] ?? 0;
 } catch (Exception $e) {
     $totalShielded = 0;
 }
