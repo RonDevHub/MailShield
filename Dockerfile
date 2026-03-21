@@ -1,26 +1,36 @@
 FROM php:8.3-fpm-alpine
 
-# System Abhängigkeiten
+# System-Abhängigkeiten & User-Management
+# Wir stellen sicher, dass www-data existiert (Alpine-Fix)
+RUN set -x ; \
+    addgroup -g 82 -S www-data ; \
+    adduser -u 82 -D -S -G www-data www-data && exit 0 ; exit 1
+
 RUN apk add --no-cache nginx supervisor
 
-# PHP Extensions (PDO für SQLite/MySQL)
+# PHP Extensions
 RUN docker-php-ext-install pdo pdo_mysql
-
-# Verzeichnisse erstellen
-RUN mkdir -p /var/www/html /run/nginx /var/log/supervisor
 
 # Arbeitsverzeichnis
 WORKDIR /var/www/html
 
-# Dateien kopieren
+# Zuerst Verzeichnisstruktur erzwingen
+RUN mkdir -p /var/www/html/data \
+             /var/www/html/config \
+             /var/www/html/public \
+             /run/nginx \
+             /var/log/supervisor
+
+# Projektdateien kopieren
 COPY . .
 
-# Berechtigungen für SQLite und Config
-RUN chown -R www-data:www-data /var/www/html/data /var/www/html/config
+# Jetzt die Berechtigungen setzen (rekursiv)
+RUN chown -R www-data:www-data /var/www/html
 
-# Nginx Config einspielen (muss erstellt werden)
+# Nginx & Supervisor Config
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
+COPY docker/supervisord.conf /etc/supervisord.conf
 
 EXPOSE 80
 
-CMD ["/usr/bin/supervisord", "-n", "-c", "/var/www/html/docker/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
