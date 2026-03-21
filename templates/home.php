@@ -1,3 +1,10 @@
+<?php
+/**
+ * MailShield PHP - Home Template (An dein Design angepasst)
+ */
+$captchaType = getenv('CAPTCHA_TYPE') ?: $config['captcha_type'];
+?>
+
 <div class="bg-white dark:bg-darkcard p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800">
     <h2 class="text-xl font-semibold mb-6 text-center"><?= $lang['subtitle'] ?></h2>
     
@@ -10,6 +17,24 @@
         
         <div class="hidden">
             <input type="text" name="hp_field" value="">
+        </div>
+
+        <div class="p-4 bg-gray-50 dark:bg-darkbg/50 rounded-xl border border-gray-100 dark:border-gray-700">
+            <?php if ($captchaType === 'cloudflare'): ?>
+                <div class="flex justify-center">
+                    <div class="cf-turnstile" data-sitekey="<?= getenv('CF_SITE_KEY') ?: $config['cf_site_key'] ?>" data-theme="auto" data-compact="true"></div>
+                </div>
+                <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+            
+            <?php else: ?>
+                <div class="flex items-center justify-between gap-4">
+                    <span class="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        <?= \App\Captcha::generateMathTask() ?>
+                    </span>
+                    <input type="number" name="captcha_input" required 
+                           class="w-24 p-2 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-darkbg text-center font-bold outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            <?php endif; ?>
         </div>
 
         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transform active:scale-95 transition-all">
