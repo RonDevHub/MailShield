@@ -1,4 +1,8 @@
-pipeline:
+when:
+  - event: push
+    branch: beta
+
+steps:
   build-beta:
     image: plugins/docker
     settings:
@@ -6,8 +10,6 @@ pipeline:
       repo: ghcr.io/rondevhub/mailshield
       tags: beta
       username:
-        from_secret: [ MAILSHIELD_GITHUBNAME ]
+        from_secret: MAILSHIELD_GITHUBNAME
       password:
-        from_secret: [ MAILSHIELD_GITHUBTOKEN ]
-    when:
-      branch: beta
+        from_secret: MAILSHIELD_GITHUBTOKEN
