@@ -143,13 +143,13 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     <div class="p-4 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-xl font-mono text-lg break-all">
                         <?= htmlspecialchars($decrypted_email) ?>
                     </div>
-                    <a href="/" class="mt-6 inline-block text-blue-500 underline text-sm">Zurück</a>
+                    <a href="/" class="mt-6 inline-block text-blue-500 underline text-sm"><?= $lang['back'] ?></a>
                 </div>
             <?php elseif ($slug && $slug !== 'index.php' && $slug !== 'admin'): ?>
                 <form method="POST" class="text-center">
                     <h2 class="text-xl mb-4"><?= $lang['view_desc'] ?></h2>
                     <div class="cf-turnstile flex justify-center mb-6" data-sitekey="<?= getenv('CF_SITE_KEY') ?>"></div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">Anzeigen <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2"><?= $lang['btn_view'] ?> <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512">
                             <path fill="currentColor" d="M288 64c-140.8 0-229.3 128-256 192 26.7 64 115.2 192 256 192 140.8 0 229.3-128 256-192-26.7-64-115.2-192-256-192zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1 3.3 7.9 3.3 16.7 0 24.6-14.9 35.7-46.2 87.7-93 131.1-47.1 43.7-111.8 80.6-192.6 80.6S142.5 443.2 95.4 399.4c-46.8-43.5-78.1-95.4-93-131.1-3.3-7.9-3.3-16.7 0-24.6 14.9-35.7 46.2-87.7 93-131.1zM288 352c53 0 96-43 96-96 0-43.3-28.7-79.9-68.1-91.9 2.7 8.8 4.1 18.2 4.1 27.9 0 53-43 96-96 96-9.7 0-19.1-1.4-27.9-4.1 11.9 39.4 48.6 68.1 91.9 68.1zM160.2 263.8c-.2-2.6-.2-5.2-.2-7.8 0-12.2 1.7-23.9 4.9-35 .3-.9 .5-1.8 .8-2.7 12.4-40.4 44.3-72.2 84.7-84.7 11.9-3.7 24.6-5.6 37.7-5.6 2.5 0 5 .1 7.4 .2l.4 0c67.1 4 120.2 59.7 120.2 127.8 0 70.7-57.3 128-128 128-68.1 0-123.8-53.2-127.8-120.2zm32.1-16.1c9.3 5.3 20.1 8.4 31.6 8.4 35.3 0 64-28.7 64-64 0-11.5-3-22.3-8.4-31.6-46.4 4-83.3 40.9-87.3 87.3z" />
                         </svg>
                     </button>
@@ -163,7 +163,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     </div>
                     <div class="cf-turnstile flex justify-center" data-sitekey="<?= getenv('CF_SITE_KEY') ?>"></div>
                     <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
-                        Generieren
+                        <?= $lang['btn_generate'] ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 576 512">
                             <path fill="currentColor" d="M231.1 7.9c16-6.8 34-6.8 50 0L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.7 363.2-16.7 8-36.1 8-52.7 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L231.1 7.9zm37.5 29.4c-8-3.4-17-3.4-25 0l-176.7 75c-11.3 4.8-18.8 15.5-18.8 27.6 .5 94 39.3 259.8 195.4 334.5 7.9 3.8 17.2 3.8 25.1 0 156.1-74.7 195-240.4 195.5-334.5 .1-12.1-7.5-22.8-18.8-27.6l-176.7-75zm54.5 132.9c5.2-7.1 15.2-8.7 22.3-3.5s8.7 15.2 3.5 22.3L243.4 334.2c-2.8 3.8-7.1 6.2-11.8 6.5s-9.3-1.4-12.6-4.8l-54.4-56.3c-6.1-6.4-6-16.5 .4-22.6s16.5-5.9 22.6 .4l41.2 42.6 94.4-129.8z"/></svg>
                         </svg>
