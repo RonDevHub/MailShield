@@ -4,6 +4,7 @@ return [
     'subtitle' => 'Verschleiere deine E-Mail-Adresse vor Bot-Scrapern.',
     'no_tracking' => 'Keine Nachverfolgung',
     'no_ads' => 'Keine Werbung',
+    'free' => '100% kostenlos',
     'input_placeholder' => 'Deine E-Mail eingeben...',
     'btn_generate' => 'Link erstellen',
     'btn_view' => 'E-Mail Anzeigen',
