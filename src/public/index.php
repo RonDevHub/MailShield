@@ -219,7 +219,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
         -->
         
         <footer class="text-center mt-8 mb-8">
-            <p class="text-xs text-gray-500 dark:text-gray-400"><?= $lang['copy'] ?> <a href="https://github.com/RonDevHub/MailShield" class="font-semibold no-underline hover:underline decoration-blue-500" target="_blank">RonDevHub</a> | <a href="https://github.com/RonDevHub" class="font-semibold no-underline hover:underline decoration-purple-700" target="_blank">Support me</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400"><?= $lang['copy'] ?> <a href="https://github.com/RonDevHub/MailShield" class="font-semibold no-underline hover:underline decoration-blue-500" target="_blank">RonDevHub</a> | <a href="https://github.com/RonDevHub" class="font-semibold no-underline hover:underline decoration-purple-700" target="_blank">Support me</a></p>
         </footer>
     </div>
 
