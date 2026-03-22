@@ -221,7 +221,10 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                 </div>
             <?php endif; ?>
         </main>
-        <p class="text-gray-500 dark:text-gray-400"><?= $lang['subtitle'] ?></p>
+
+        <footer class="text-center mt-8">
+        <p class="text-xs text-gray-500 dark:text-gray-400">Erstellt mit ❤️ und ☕️ von RonDevHub | Support me</p>
+        </footer>
     </div>
 
     <div x-show="toast" x-cloak x-transition class="fixed top-10 bg-green-500 text-white px-6 py-3 rounded-full shadow-xl font-bold z-[100]" x-text="toastMsg"></div>
