@@ -2,6 +2,7 @@
 return [
     'title' => 'MailShield 🛡️',
     'subtitle' => 'Obfuscate your email address to stop bot scrapers.',
+    'no_tracking' => 'No tracking',
     'input_placeholder' => 'Enter your email...',
     'btn_generate' => 'Generate Link',
     'btn_view' => 'E-Mail show',
