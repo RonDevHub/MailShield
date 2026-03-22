@@ -57,7 +57,7 @@ if (isset($_SESSION['admin_logged_in']) && isset($_POST['reset_db'])) {
                 <div class="space-y-4">
                     <button @click="showConfirm = true" class="w-full bg-red-600/10 text-red-500 border border-red-600/20 py-4 rounded-xl font-bold hover:bg-red-600 hover:text-white transition-all">Datenbank leeren 🔥</button>
                     <a href="?logout" class="block w-full bg-gray-200 dark:bg-gray-700 py-4 rounded-xl font-bold"><?= $lang['admin_logout'] ?></a>
-                    <a href="/" class="block text-sm opacity-50 mt-4"><?= ['back_main'] ?></a>
+                    <a href="/" class="block text-sm opacity-50 mt-4"><?= $lang['back_main'] ?></a>
                 </div>
             </div>
 
