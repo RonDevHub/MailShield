@@ -123,8 +123,8 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
         <header class="text-center mb-8">
             <h1 class="text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400"><?= $lang['title'] ?></h1>
             <p class="text-gray-500 dark:text-gray-400"><?= $lang['subtitle'] ?></p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 384 512">
+            <p class="mt-3 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 mr-2" viewBox="0 0 384 512">
                     <defs>
                         <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
@@ -134,7 +134,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     <path fill="url(#icon-gradient)" d="M96 96l0 64 192 0 0-64c0-53-43-96-96-96S96 43 96 96zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64zM32 224l0 224c0 17.7 14.3 32 32 32l256 0c17.7 0 32-14.3 32-32l0-224c0-17.7-14.3-32-32-32L64 192c-17.7 0-32 14.3-32 32z" />
                 </svg>
                 <?= $lang['no_tracking'] ?>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-4" viewBox="0 0 576 512">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-4 mr-2" viewBox="0 0 576 512">
                     <defs>
                         <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
@@ -144,6 +144,16 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     <path fill="url(#icon-gradient)" d="M27.3-27.2c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l544 544c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L466.4 411.9c4.9-4.1 9.6-8.2 14.1-12.5 46.8-43.5 78.1-95.4 93-131.1 3.3-7.9 3.3-16.7 0-24.6-14.9-35.7-46.2-87.7-93-131.1-47.1-43.7-111.8-80.6-192.6-80.6-60 0-111.1 20.3-152.8 48.7L27.3-27.2zm131 131c36.4-23.7 79.7-39.8 129.7-39.8 140.8 0 229.3 128 256 192-13.3 32-42.1 80-85.2 120-4.9 4.5-9.9 8.9-15.1 13.2l-54.6-54.6c16.9-21.7 26.9-48.9 26.9-78.5 0-70.7-57.3-128-128-128-29.6 0-56.9 10-78.5 26.9l-51.2-51.2zM366.2 311.7L232.3 177.8c15.7-11.2 34.9-17.8 55.7-17.8 53 0 96 43 96 96 0 20.8-6.6 40-17.8 55.7zM74.8 133.3c-35.5 38.5-59.7 80.2-72.3 110.4-3.3 7.9-3.3 16.7 0 24.6 14.9 35.7 46.2 87.7 93 131.1 47.1 43.7 111.8 80.6 192.6 80.6 40.6 0 77.1-9.3 109.4-24.1L373 431.5c-25.8 10.3-54.1 16.5-85 16.5-140.8 0-229.3-128-256-192 11.2-26.8 33.2-64.9 65.4-100.1L74.8 133.3z" />
                 </svg>
                 <?= $lang['no_ads'] ?>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-4 mr-2" viewBox="0 0 576 512">
+                    <defs>
+                        <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#2dd4bf;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#icon-gradient)" d="M378.9 64c-32.4 0-62.9 15.6-81.9 41.9l-28 38.7c-3 4.2-7.8 6.6-13 6.6s-10-2.5-13-6.6l-28-38.7 0 0c-19-26.3-49.5-41.9-81.9-41.9-55.9 0-101.1 45.3-101.1 101.1 0 55 34.4 107.1 71.8 152.5 42.1 51.2 93.4 96 128.5 122.9 6.2 4.8 14.4 7.5 23.7 7.5s17.4-2.7 23.7-7.5c35.1-26.8 86.4-71.7 128.5-122.9 37.3-45.4 71.8-97.5 71.8-152.5 0-55.9-45.3-101.1-101.1-101.1zM271 87.1c25-34.6 65.2-55.1 107.9-55.1 73.5 0 133.1 59.6 133.1 133.1 0 67.4-41.6 127.3-79.1 172.8-44.1 53.6-97.3 100.1-133.8 127.9-12.4 9.4-27.6 14.1-43.1 14.1s-30.8-4.6-43.1-14.1C176.4 438 123.2 391.5 79.1 338 41.6 292.4 0 232.5 0 165.1 0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1l15 20.7 15-20.7z" />
+                </svg>
+                <?= $lang['free'] ?>
             </p>
 
             <div class="mt-8 flex justify-center gap-12">
@@ -211,6 +221,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                 </div>
             <?php endif; ?>
         </main>
+        <p class="text-gray-500 dark:text-gray-400"><?= $lang['subtitle'] ?></p>
     </div>
 
     <div x-show="toast" x-cloak x-transition class="fixed top-10 bg-green-500 text-white px-6 py-3 rounded-full shadow-xl font-bold z-[100]" x-text="toastMsg"></div>
