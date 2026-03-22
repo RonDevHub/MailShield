@@ -209,9 +209,17 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                 </div>
             <?php endif; ?>
         </main>
-
+        
+        <!-- Bitte diesen kleinen Footer-Link nicht entfernen.  
+             Er ist ein fairer Hinweis auf den ursprünglichen Autor und beeinträchtigt das Design nicht.
+             Das Entfernen wäre unfair gegenüber der geleisteten Arbeit.
+             Please do not remove this small footer link.
+             It is a fair reference to the original author and does not affect the design.
+             Removing it would be unfair to the work that was done.
+        -->
+        
         <footer class="text-center mt-8 mb-8">
-            <p class="text-xs text-gray-500 dark:text-gray-400">Erstellt mit ❤️ und ☕️ von RonDevHub | Support me</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400"><?= $lang['copy'] ?> <a href="https://github.com/RonDevHub/MailShield" class="font-semibold no-underline hover:underline decoration-blue-500" target="_blank">RonDevHub</a> | <a href="https://github.com/RonDevHub" class="font-semibold no-underline hover:underline decoration-purple-700" target="_blank">Support me</p>
         </footer>
     </div>
 
