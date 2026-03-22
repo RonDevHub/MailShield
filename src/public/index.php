@@ -20,7 +20,7 @@ $lang = (file_exists("../lang/$lang_code.php")) ? require "../lang/$lang_code.ph
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $slug = ltrim($uri, '/');
 
-// Routing Weiche
+// Admin-Routing
 if ($slug === 'admin') {
     if (!$admin_enabled) {
         header("HTTP/1.0 404 Not Found");
@@ -49,10 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
         $stmt->execute([$email_hash]);
         $existing = $stmt->fetch();
 
-        if ($existing) {
-            $final_slug = $existing['slug'];
-        } else {
-            $final_slug = bin2hex(random_bytes(4));
+        $final_slug = $existing ? $existing['slug'] : bin2hex(random_bytes(4));
+        if (!$existing) {
             $encrypted = Crypto::encrypt($email, $app_key);
             $stmt = $db->prepare("INSERT INTO shields (hash, encrypted_email, slug) VALUES (?, ?, ?)");
             $stmt->execute([$email_hash, $encrypted, $final_slug]);
@@ -71,7 +69,7 @@ $total_emails = $db->query("SELECT COUNT(*) FROM shields")->fetchColumn();
 $db_since = $db->query("SELECT value FROM metadata WHERE key = 'db_created_at'")->fetchColumn();
 
 $decrypted_email = null;
-if (!empty($slug) && $slug !== 'index.php') {
+if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
     $stmt = $db->prepare("SELECT encrypted_email FROM shields WHERE slug = ?");
     $stmt->execute([$slug]);
     $entry = $stmt->fetch();
@@ -82,12 +80,8 @@ if (!empty($slug) && $slug !== 'index.php') {
 ?>
 <!DOCTYPE html>
 <html lang="<?= $lang_code ?>" 
-      x-data="{ 
-        darkMode: localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
-        toast: false, 
-        toastMsg: '' 
-      }" 
-      x-init="$watch('darkMode', val => { localStorage.setItem('theme', val ? 'dark' : 'light'); document.documentElement.classList.toggle('dark', val) }); document.documentElement.classList.toggle('dark', darkMode)"
+      x-data="app" 
+      x-init="init()"
       :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
@@ -115,9 +109,9 @@ if (!empty($slug) && $slug !== 'index.php') {
             <h1 class="text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400"><?= $lang['title'] ?></h1>
             <p class="text-gray-500 dark:text-gray-400"><?= $lang['subtitle'] ?></p>
             
-            <div class="mt-8 flex justify-center gap-12" x-data="{ count: 0 }" x-init="setTimeout(() => { let interval = setInterval(() => { if(count < <?= (int)$total_emails ?>) count++; else clearInterval(interval); }, 30) }, 200)">
+            <div class="mt-8 flex justify-center gap-12">
                 <div class="text-center">
-                    <span class="block text-3xl font-bold text-blue-500" x-text="count">0</span>
+                    <span class="block text-3xl font-bold text-blue-500"><?= (int)$total_emails ?></span>
                     <span class="text-xs uppercase tracking-widest opacity-60"><?= $lang['stats_protected'] ?></span>
                 </div>
                 <div class="text-center border-l border-gray-200 dark:border-gray-700 pl-12">
@@ -161,18 +155,11 @@ if (!empty($slug) && $slug !== 'index.php') {
             <?php endif; ?>
 
             <?php if ($generated_links): ?>
-                <div class="mt-8 space-y-3" x-data="{ 
-                    copy(text) { 
-                        navigator.clipboard.writeText(text); 
-                        $data.toastMsg = <?= json_encode($lang['copy_success']) ?>; 
-                        $data.toast = true; 
-                        setTimeout(() => $data.toast = false, 2000); 
-                    } 
-                }">
+                <div class="mt-8 space-y-3">
                     <?php foreach ($generated_links as $type => $val): ?>
                         <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
                             <code class="text-xs flex-1 truncate opacity-70 px-2"><?= htmlspecialchars($val) ?></code>
-                            <button @click="copy(<?= htmlspecialchars(json_encode($val), ENT_QUOTES) ?>)" class="text-blue-500 hover:text-blue-400 p-2 shrink-0">📋</button>
+                            <button @click="copyLink(<?= htmlspecialchars(json_encode($val)) ?>)" class="text-blue-500 hover:text-blue-400 p-2 shrink-0">📋</button>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -182,9 +169,29 @@ if (!empty($slug) && $slug !== 'index.php') {
 
     <div x-show="toast" x-cloak x-transition class="fixed top-10 bg-green-500 text-white px-6 py-3 rounded-full shadow-xl font-bold z-[100]" x-text="toastMsg"></div>
 
-    <button @click="darkMode = !darkMode" 
+    <button @click="darkMode = !darkMode; localStorage.setItem('theme', darkMode ? 'dark' : 'light')" 
             class="fixed bottom-8 right-8 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 hover:scale-110 transition-transform z-50">
         <span x-show="!darkMode">🌙</span><span x-show="darkMode">☀️</span>
     </button>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('app', () => ({
+                darkMode: localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
+                toast: false,
+                toastMsg: '',
+                init() {
+                    this.$watch('darkMode', val => document.documentElement.classList.toggle('dark', val));
+                },
+                copyLink(text) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        this.toastMsg = <?= json_encode($lang['copy_success']) ?>;
+                        this.toast = true;
+                        setTimeout(() => this.toast = false, 2000);
+                    });
+                }
+            }))
+        })
+    </script>
 </body>
 </html>
