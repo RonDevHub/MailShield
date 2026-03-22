@@ -3,6 +3,7 @@ return [
     'title' => 'MailShield 🛡️',
     'subtitle' => 'Verschleiere deine E-Mail-Adresse vor Bot-Scrapern.',
     'no_tracking' => 'Keine Nachverfolgung',
+    'no_ads' => 'Keine Werbung',
     'input_placeholder' => 'Deine E-Mail eingeben...',
     'btn_generate' => 'Link erstellen',
     'btn_view' => 'E-Mail Anzeigen',
