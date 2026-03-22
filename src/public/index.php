@@ -121,7 +121,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
 
     <div class="max-w-xl w-full">
         <header class="text-center mb-8">
-            <h1 class="text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400"><?= $lang['title'] ?></h1>
+            <h1 class="text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400"><img src="/img/mailshield.png" class="w-5 h-5 mr-1"><?= $lang['title'] ?></h1>
             <p class="text-gray-500 dark:text-gray-400"><?= $lang['subtitle'] ?></p>
             <p class="mt-3 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" viewBox="0 0 384 512">
