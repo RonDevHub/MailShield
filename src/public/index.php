@@ -123,7 +123,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
         <header class="text-center mb-8">
             <h1 class="text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400"><?= $lang['title'] ?></h1>
             <p class="text-gray-500 dark:text-gray-400"><?= $lang['subtitle'] ?></p>
-            <p class="text-xs text-gray-500 dark:text-gray-400"><svg xmlns="http://www.w3.org/2000/svg" class="w-2 h-2 viewBox="0 0 384 512"><path fill="currentColor" d="M96 96l0 64 192 0 0-64c0-53-43-96-96-96S96 43 96 96zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64zM32 224l0 224c0 17.7 14.3 32 32 32l256 0c17.7 0 32-14.3 32-32l0-224c0-17.7-14.3-32-32-32L64 192c-17.7 0-32 14.3-32 32z"/></svg> <?= $lang['no_tracking'] ?></p>
+            <p class="text-xs text-gray-500 dark:text-gray-400"><svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 viewBox="0 0 384 512"><path fill="currentColor" d="M96 96l0 64 192 0 0-64c0-53-43-96-96-96S96 43 96 96zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64zM32 224l0 224c0 17.7 14.3 32 32 32l256 0c17.7 0 32-14.3 32-32l0-224c0-17.7-14.3-32-32-32L64 192c-17.7 0-32 14.3-32 32z"/></svg> <?= $lang['no_tracking'] ?></p>
 
             <div class="mt-8 flex justify-center gap-12">
                 <div class="text-center">
