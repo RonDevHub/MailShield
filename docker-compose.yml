@@ -1,0 +1,14 @@
+services:
+  mailshield:
+    image: ghcr.io/rondevhub/mailshield:latest
+    container_name: mailshield
+    restart: unless-stopped
+    environment:
+      - APP_KEY=${APP_KEY}
+      - ADMIN_USER=${ADMIN_USER}
+      - ADMIN_PASS=${ADMIN_PASS}
+      - CF_SITE_KEY=${CF_SITE_KEY}
+      - CF_SECRET_KEY=${CF_SECRET_KEY}
+    volumes:
+      - ./data:/var/www/html/data
+    # Cloudflare Tunnel wird diesen Dienst über Port 80 ansprechen
