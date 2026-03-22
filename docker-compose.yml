@@ -4,11 +4,18 @@ services:
     container_name: mailshield
     restart: unless-stopped
     environment:
-      - APP_KEY=${APP_KEY}
-      - ADMIN_USER=${ADMIN_USER}
-      - ADMIN_PASS=${ADMIN_PASS}
-      - CF_SITE_KEY=${CF_SITE_KEY}
-      - CF_SECRET_KEY=${CF_SECRET_KEY}
+      # Generiere einen sicheren Key (z.B. openssl rand -base64 32)
+      - APP_KEY=base64:GeneriereMichBitteNeu12345678901234567=
+      - https://mailshield.deine-domain.de
+      # Admin Zugang
+      - ADMIN_SITE=false
+      - ADMIN_USER=admin
+      - ADMIN_PASS=admin123
+      # Cloudflare Turnstile
+      - CF_SITE_KEY=1x00000000000000000000AA
+      - CF_SECRET_KEY=1x0000000000000000000000000000000AA
+      - DB_PATH=/var/www/html/data/mailshield.sqlite
+    ports:
+      - "8080:80"
     volumes:
       - ./data:/var/www/html/data
-    # Cloudflare Tunnel wird diesen Dienst über Port 80 ansprechen
