@@ -1,13 +1,15 @@
 #!/bin/sh
-set -e
 
-# Sicherstellen, dass der data-Ordner existiert
+# Sicherstellen, dass das Datenverzeichnis existiert und beschreibbar ist
 mkdir -p /var/www/html/data
-
-# Dem Webserver (www-data) die Rechte am data-Ordner geben
-# Das korrigiert die Rechte, egal was der Host (Laptop) vorgibt
 chown -R www-data:www-data /var/www/html/data
 chmod -R 775 /var/www/html/data
 
-# Den eigentlichen Befehl (Supervisor) starten
+# Falls die Datenbank noch nicht existiert, wird sie durch das PHP-Skript initialisiert
+# Aber wir stellen sicher, dass die Datei selbst (falls vorhanden) die richtigen Rechte hat
+if [ -f /var/www/html/data/mailshield.sqlite ]; then
+    chown www-data:www-data /var/www/html/data/mailshield.sqlite
+    chmod 664 /var/www/html/data/mailshield.sqlite
+fi
+
 exec "$@"
