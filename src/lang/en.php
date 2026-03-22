@@ -1,6 +1,6 @@
 <?php
 return [
-    'title' => 'MailShield 🛡️',
+    'title' => 'MailShield',
     'subtitle' => 'Obfuscate your email address to stop bot scrapers.',
     'no_tracking' => 'No tracking',
     'no_ads' => 'No ads',
