@@ -9,19 +9,21 @@ $db = $db_instance->getDB();
 $limiter = new RateLimiter($db);
 $app_key = getenv('APP_KEY');
 
-// IP & Hash
 $user_ip = $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['REMOTE_ADDR'];
 $ip_hash = hash('sha256', $user_ip);
 
-// Sprache ermitteln
 $lang_code = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'de', 0, 2);
 $lang = (file_exists("../lang/$lang_code.php")) ? require "../lang/$lang_code.php" : require "../lang/en.php";
 
-// Routing Helfer
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $slug = ltrim($uri, '/');
 
-// API / POST Handling
+// Weiche für Admin Interface
+if ($slug === 'admin') {
+    require_once 'admin.php';
+    exit;
+}
+
 $message = '';
 $generated_links = null;
 
@@ -33,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
     } elseif (!empty($_POST['honeypot'])) {
         $message = "Nice try, Bot!";
     } else {
-        // Turnstile Check (vereinfacht)
         $email = $_POST['email'];
         $email_hash = Crypto::hash($email);
         
@@ -53,23 +54,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
         $full_url = (getenv('APP_URL') ?: 'http://localhost') . '/' . $final_slug;
         $generated_links = [
             'url' => $full_url,
-            'html' => '<a href="'.$full_url.'">E-Mail anzeigen</a>',
-            'markdown' => '[E-Mail anzeigen]('.$full_url.')'
+            'html' => '<a href="' . $full_url . '" target="_blank">' . $lang['view_title'] . '</a>',
+            'markdown' => '[' . $lang['view_title'] . '](' . $full_url . ')'
         ];
     }
 }
 
-// Stats abfragen
 $total_emails = $db->query("SELECT COUNT(*) FROM shields")->fetchColumn();
 $db_since = $db->query("SELECT value FROM metadata WHERE key = 'db_created_at'")->fetchColumn();
 
-// View Mode
 $decrypted_email = null;
-if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
+if (!empty($slug) && $slug !== 'index.php') {
     $stmt = $db->prepare("SELECT encrypted_email FROM shields WHERE slug = ?");
     $stmt->execute([$slug]);
     $entry = $stmt->fetch();
-    
     if ($entry && isset($_POST['cf-turnstile-response'])) {
         $decrypted_email = Crypto::decrypt($entry['encrypted_email'], $app_key);
     }
@@ -81,7 +79,17 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $lang['title'] ?></title>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>[x-cloak] { display: none !important; }</style>
@@ -114,8 +122,9 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     <div class="p-4 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-xl font-mono text-lg break-all">
                         <?= htmlspecialchars($decrypted_email) ?>
                     </div>
+                    <a href="/" class="mt-6 inline-block text-blue-500 underline text-sm">Zurück</a>
                 </div>
-            <?php elseif ($slug && $slug !== 'index.php' && $slug !== 'admin'): ?>
+            <?php elseif ($slug && $slug !== 'index.php'): ?>
                 <form method="POST" class="text-center">
                     <h2 class="text-xl mb-4"><?= $lang['view_desc'] ?></h2>
                     <div class="cf-turnstile flex justify-center mb-6" data-sitekey="<?= getenv('CF_SITE_KEY') ?>"></div>
@@ -142,9 +151,9 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
             <?php if ($generated_links): ?>
                 <div class="mt-8 space-y-3" x-data="{ copy(text) { navigator.clipboard.writeText(text); this.toast = true; this.toastMsg = '<?= $lang['copy_success'] ?>'; setTimeout(() => this.toast = false, 2000) } }">
                     <?php foreach ($generated_links as $type => $val): ?>
-                        <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700">
-                            <code class="text-xs flex-1 truncate opacity-70"><?= htmlspecialchars($val) ?></code>
-                            <button @click="copy('<?= addslashes($val) ?>')" class="text-blue-500 hover:text-blue-400 p-2">📋</button>
+                        <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+                            <code class="text-xs flex-1 truncate opacity-70 px-2"><?= htmlspecialchars($val) ?></code>
+                            <button @click="copy('<?= addslashes($val) ?>')" class="text-blue-500 hover:text-blue-400 p-2 shrink-0">📋</button>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -154,7 +163,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
 
     <div x-show="toast" x-cloak x-transition class="fixed top-10 bg-green-500 text-white px-6 py-3 rounded-full shadow-xl font-bold" x-text="toastMsg"></div>
 
-    <button @click="darkMode = !darkMode; localStorage.setItem('theme', darkMode ? 'dark' : 'light')" 
+    <button @click="darkMode = !darkMode; localStorage.setItem('theme', darkMode ? 'dark' : 'light'); document.documentElement.classList.toggle('dark')" 
             class="fixed bottom-8 right-8 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 hover:scale-110 transition-transform">
         <span x-show="!darkMode">🌙</span><span x-show="darkMode">☀️</span>
     </button>
