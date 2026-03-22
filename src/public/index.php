@@ -1,4 +1,5 @@
 <?php
+session_start();
 error_reporting(0);
 require_once '../core/Crypto.php';
 require_once '../core/Database.php';
@@ -8,6 +9,7 @@ $db_instance = new Database(getenv('DB_PATH') ?: 'data/mailshield.sqlite');
 $db = $db_instance->getDB();
 $limiter = new RateLimiter($db);
 $app_key = getenv('APP_KEY');
+$admin_enabled = filter_var(getenv('ADMIN_SITE') ?: 'true', FILTER_VALIDATE_BOOLEAN);
 
 $user_ip = $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['REMOTE_ADDR'];
 $ip_hash = hash('sha256', $user_ip);
@@ -18,8 +20,13 @@ $lang = (file_exists("../lang/$lang_code.php")) ? require "../lang/$lang_code.ph
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $slug = ltrim($uri, '/');
 
-// Weiche für Admin Interface
+// Routing Weiche
 if ($slug === 'admin') {
+    if (!$admin_enabled) {
+        header("HTTP/1.0 404 Not Found");
+        echo "404 Not Found";
+        exit;
+    }
     require_once 'admin.php';
     exit;
 }
@@ -74,36 +81,36 @@ if (!empty($slug) && $slug !== 'index.php') {
 }
 ?>
 <!DOCTYPE html>
-<html lang="<?= $lang_code ?>" x-data="{ darkMode: localStorage.getItem('theme') === 'dark', toast: false, toastMsg: '' }" :class="{ 'dark': darkMode }">
+<html lang="<?= $lang_code ?>" 
+      x-data="{ 
+        darkMode: localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
+        toast: false, 
+        toastMsg: '' 
+      }" 
+      x-init="$watch('darkMode', val => { localStorage.setItem('theme', val ? 'dark' : 'light'); document.documentElement.classList.toggle('dark', val) }); document.documentElement.classList.toggle('dark', darkMode)"
+      :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $lang['title'] ?></title>
-    <script>
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-    </script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = { darkMode: 'class' }
-    </script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>[x-cloak] { display: none !important; }</style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col items-center justify-center p-4">
 
+    <?php if ($admin_enabled): ?>
     <a href="/admin" class="fixed top-4 right-4 text-xs opacity-20 hover:opacity-100 transition-opacity">🛡️ Admin</a>
+    <?php endif; ?>
 
     <div class="max-w-xl w-full">
         <header class="text-center mb-8">
             <h1 class="text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400"><?= $lang['title'] ?></h1>
             <p class="text-gray-500 dark:text-gray-400"><?= $lang['subtitle'] ?></p>
             
-            <div class="mt-8 flex justify-center gap-12" x-data="{ count: 0 }" x-init="setTimeout(() => { let interval = setInterval(() => { if(count < <?= $total_emails ?>) count++; else clearInterval(interval); }, 30) }, 200)">
+            <div class="mt-8 flex justify-center gap-12" x-data="{ count: 0 }" x-init="setTimeout(() => { let interval = setInterval(() => { if(count < <?= (int)$total_emails ?>) count++; else clearInterval(interval); }, 30) }, 200)">
                 <div class="text-center">
                     <span class="block text-3xl font-bold text-blue-500" x-text="count">0</span>
                     <span class="text-xs uppercase tracking-widest opacity-60"><?= $lang['stats_protected'] ?></span>
@@ -163,8 +170,8 @@ if (!empty($slug) && $slug !== 'index.php') {
 
     <div x-show="toast" x-cloak x-transition class="fixed top-10 bg-green-500 text-white px-6 py-3 rounded-full shadow-xl font-bold" x-text="toastMsg"></div>
 
-    <button @click="darkMode = !darkMode; localStorage.setItem('theme', darkMode ? 'dark' : 'light'); document.documentElement.classList.toggle('dark')" 
-            class="fixed bottom-8 right-8 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 hover:scale-110 transition-transform">
+    <button @click="darkMode = !darkMode" 
+            class="fixed bottom-8 right-8 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 hover:scale-110 transition-transform z-50">
         <span x-show="!darkMode">🌙</span><span x-show="darkMode">☀️</span>
     </button>
 </body>
