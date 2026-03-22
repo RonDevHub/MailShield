@@ -20,7 +20,7 @@ $lang = (file_exists("../lang/$lang_code.php")) ? require "../lang/$lang_code.ph
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $slug = ltrim($uri, '/');
 
-// Routing Weiche
+// Routing Weiche für Admin
 if ($slug === 'admin') {
     if (!$admin_enabled) {
         header("HTTP/1.0 404 Not Found");
@@ -60,8 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
         
         $full_url = (getenv('APP_URL') ?: 'http://localhost') . '/' . $final_slug;
         $generated_links = [
-            'url' => $full_url,
-            'html' => '<a href="' . $full_url . '" target="_blank">' . $lang['view_title'] . '</a>',
+            'url'      => $full_url,
+            'html'     => '<a href="' . $full_url . '" target="_blank">' . $lang['view_title'] . '</a>',
             'markdown' => '[' . $lang['view_title'] . '](' . $full_url . ')'
         ];
     }
@@ -93,6 +93,12 @@ if (!empty($slug) && $slug !== 'index.php') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $lang['title'] ?></title>
+    <script>
+        // Sofortiger Check gegen White-Flash beim Laden
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' }</script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -131,7 +137,7 @@ if (!empty($slug) && $slug !== 'index.php') {
                     </div>
                     <a href="/" class="mt-6 inline-block text-blue-500 underline text-sm">Zurück</a>
                 </div>
-            <?php elseif ($slug && $slug !== 'index.php'): ?>
+            <?php elseif ($slug && $slug !== 'index.php' && $slug !== 'admin'): ?>
                 <form method="POST" class="text-center">
                     <h2 class="text-xl mb-4"><?= $lang['view_desc'] ?></h2>
                     <div class="cf-turnstile flex justify-center mb-6" data-sitekey="<?= getenv('CF_SITE_KEY') ?>"></div>
@@ -156,11 +162,11 @@ if (!empty($slug) && $slug !== 'index.php') {
             <?php endif; ?>
 
             <?php if ($generated_links): ?>
-                <div class="mt-8 space-y-3" x-data="{ copy(text) { navigator.clipboard.writeText(text); this.toast = true; this.toastMsg = '<?= $lang['copy_success'] ?>'; setTimeout(() => this.toast = false, 2000) } }">
+                <div class="mt-8 space-y-3" x-data="{ copy(text) { navigator.clipboard.writeText(text); this.toast = true; this.toastMsg = <?= json_encode($lang['copy_success']) ?>; setTimeout(() => this.toast = false, 2000) } }">
                     <?php foreach ($generated_links as $type => $val): ?>
                         <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
                             <code class="text-xs flex-1 truncate opacity-70 px-2"><?= htmlspecialchars($val) ?></code>
-                            <button @click="copy('<?= addslashes($val) ?>')" class="text-blue-500 hover:text-blue-400 p-2 shrink-0">📋</button>
+                            <button @click="copy(<?= htmlspecialchars(json_encode($val), ENT_QUOTES, 'UTF-8') ?>)" class="text-blue-500 hover:text-blue-400 p-2 shrink-0">📋</button>
                         </div>
                     <?php endforeach; ?>
                 </div>
