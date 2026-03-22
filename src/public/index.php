@@ -56,7 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
             $stmt->execute([$email_hash, $encrypted, $final_slug]);
         }
 
-        $full_url = (getenv('APP_URL') ?: 'http://localhost') . '/' . $final_slug;
+        $app_url = rtrim(getenv('APP_URL') ?: 'http://localhost', '/');
+        $full_url = $app_url . '/' . $final_slug;
         $generated_links = [
             'url'      => $full_url,
             'html'     => '<a href="' . $full_url . '" target="_blank">' . $lang['view_title'] . '</a>',
@@ -69,7 +70,10 @@ $total_emails = $db->query("SELECT COUNT(*) FROM shields")->fetchColumn();
 $db_since = $db->query("SELECT value FROM metadata WHERE key = 'db_created_at'")->fetchColumn();
 
 $decrypted_email = null;
+$is_view_page = false;
+
 if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
+    $is_view_page = true;
     $stmt = $db->prepare("SELECT encrypted_email FROM shields WHERE slug = ?");
     $stmt->execute([$slug]);
     $entry = $stmt->fetch();
@@ -79,15 +83,25 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
 }
 ?>
 <!DOCTYPE html>
-<html lang="<?= $lang_code ?>"
-    x-data="app"
-    x-init="init()"
-    :class="{ 'dark': darkMode }">
-
+<html lang="<?= $lang_code ?>" x-data="app" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $lang['title'] ?></title>
+    <title><?= $lang['title'] ?> | MailShield</title>
+    <link rel="icon" type="image/png" href="/img/mailshield.png">
+
+    <?php if (!$is_view_page): ?>
+        <meta name="description" content="<?= $lang['subtitle'] ?> - Schütze deine E-Mail-Adresse vor Bots und Scrapern mit sicheren, verschlüsselten Links.">
+        <meta name="keywords" content="Email Shield, Bot Protection, Email Scraper Protection, Privacy, Link Generator">
+        <meta property="og:title" content="<?= $lang['title'] ?>">
+        <meta property="og:description" content="<?= $lang['subtitle'] ?>">
+        <meta property="og:image" content="/img/mailshield.png">
+        <meta property="og:type" content="website">
+        <meta name="robots" content="index, follow">
+    <?php else: ?>
+        <meta name="robots" content="noindex, nofollow">
+    <?php endif; ?>
+
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
@@ -95,27 +109,18 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            darkMode: 'class'
-        }
+        tailwind.config = { darkMode: 'class' }
     </script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <style>
-        [x-cloak] {
-            display: none !important;
-        }
-    </style>
+    <style>[x-cloak] { display: none !important; }</style>
 </head>
 
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col items-center justify-center p-4">
 
     <?php if ($admin_enabled): ?>
         <a href="/admin" class="fixed top-4 right-4 text-xs opacity-20 hover:opacity-100 transition-opacity inline-flex items-center gap-1">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 512 512">
-                <path fill="currentColor" d="M243.6 37.3c8-3.4 17-3.4 25 0l176.7 75c11.3 4.8 18.9 15.5 18.8 27.6-.5 94-39.4 259.8-195.5 334.5-7.9 3.8-17.2 3.8-25.1 0-156.1-74.7-195-240.4-195.4-334.5-.1-12.1 7.5-22.8 18.8-27.6l176.7-75zM281.1 7.8c-16-6.8-34-6.8-50 0L54.3 82.8c-22 9.3-38.4 31-38.3 57.2 .5 99.2 41.3 280.7 213.6 363.2 16.7 8 36.1 8 52.8 0 172.4-82.5 213.2-264 213.6-363.2 .1-26.2-16.3-47.9-38.3-57.2L281.1 7.8zM200 128l-21.3 0c-32.4 0-58.7 26.3-58.7 58.7l0 29.3c0 22.6 13.4 42.1 32.7 50.9l-15 29.9c-4 7.9-.7 17.5 7.2 21.5s17.5 .7 21.5-7.2L186.4 271c26-4.9 45.6-27.7 45.6-55l0-56 60.2 0c6.1 0 11.6 3.4 14.3 8.8l7.2 14.3c2.7 5.4 8.2 8.8 14.3 8.8l56 0 0 16c0 35.3-28.7 64-64 64l-48 0c-8.8 0-16 7.2-16 16l0 80c0 8.8 7.2 16 16 16s16-7.2 16-16l0-64 32 0c53 0 96-43 96-96l0-16c0-17.7-14.3-32-32-32l-46.1 0-2.7-5.5c-8.1-16.3-24.8-26.5-42.9-26.5L200 128zM175.8 240c-13.1-.1-23.7-10.8-23.7-24l0-29.3c0-10.9 6.6-20.3 16-24.4 3.3-1.4 6.9-2.2 10.7-2.2l21.3 0 0 56c0 13.2-10.6 23.9-23.7 24l-.5 0zM272 208a16 16 0 1 0 0-32 16 16 0 1 0 0 32z" />
-            </svg>
-            Admin
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 512 512"><path fill="currentColor" d="M243.6 37.3c8-3.4 17-3.4 25 0l176.7 75c11.3 4.8 18.9 15.5 18.8 27.6-.5 94-39.4 259.8-195.5 334.5-7.9 3.8-17.2 3.8-25.1 0-156.1-74.7-195-240.4-195.4-334.5-.1-12.1 7.5-22.8 18.8-27.6l176.7-75zM281.1 7.8c-16-6.8-34-6.8-50 0L54.3 82.8c-22 9.3-38.4 31-38.3 57.2 .5 99.2 41.3 280.7 213.6 363.2 16.7 8 36.1 8 52.8 0 172.4-82.5 213.2-264 213.6-363.2 .1-26.2-16.3-47.9-38.3-57.2L281.1 7.8zM200 128l-21.3 0c-32.4 0-58.7 26.3-58.7 58.7l0 29.3c0 22.6 13.4 42.1 32.7 50.9l-15 29.9c-4 7.9-.7 17.5 7.2 21.5s17.5 .7 21.5-7.2L186.4 271c26-4.9 45.6-27.7 45.6-55l0-56 60.2 0c6.1 0 11.6 3.4 14.3 8.8l7.2 14.3c2.7 5.4 8.2 8.8 14.3 8.8l56 0 0 16c0 35.3-28.7 64-64 64l-48 0c-8.8 0-16 7.2-16 16l0 80c0 8.8 7.2 16 16 16s16-7.2 16-16l0-64 32 0c53 0 96-43 96-96l0-16c0-17.7-14.3-32-32-32l-46.1 0-2.7-5.5c-8.1-16.3-24.8-26.5-42.9-26.5L200 128zM175.8 240c-13.1-.1-23.7-10.8-23.7-24l0-29.3c0-10.9 6.6-20.3 16-24.4 3.3-1.4 6.9-2.2 10.7-2.2l21.3 0 0 56c0 13.2-10.6 23.9-23.7 24l-.5 0zM272 208a16 16 0 1 0 0-32 16 16 0 1 0 0 32z" /></svg> Admin
         </a>
     <?php endif; ?>
 
@@ -128,37 +133,20 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                 </span>
             </h1>
             <p class="text-gray-500 dark:text-gray-400"><?= $lang['subtitle'] ?></p>
-            <p class="mt-3 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" viewBox="0 0 384 512">
-                    <defs>
-                        <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#2dd4bf;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <path fill="url(#icon-gradient)" d="M96 96l0 64 192 0 0-64c0-53-43-96-96-96S96 43 96 96zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64zM32 224l0 224c0 17.7 14.3 32 32 32l256 0c17.7 0 32-14.3 32-32l0-224c0-17.7-14.3-32-32-32L64 192c-17.7 0-32 14.3-32 32z" />
-                </svg>
-                <?= $lang['no_tracking'] ?>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2 mr-1" viewBox="0 0 576 512">
-                    <defs>
-                        <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#2dd4bf;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <path fill="url(#icon-gradient)" d="M27.3-27.2c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l544 544c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L466.4 411.9c4.9-4.1 9.6-8.2 14.1-12.5 46.8-43.5 78.1-95.4 93-131.1 3.3-7.9 3.3-16.7 0-24.6-14.9-35.7-46.2-87.7-93-131.1-47.1-43.7-111.8-80.6-192.6-80.6-60 0-111.1 20.3-152.8 48.7L27.3-27.2zm131 131c36.4-23.7 79.7-39.8 129.7-39.8 140.8 0 229.3 128 256 192-13.3 32-42.1 80-85.2 120-4.9 4.5-9.9 8.9-15.1 13.2l-54.6-54.6c16.9-21.7 26.9-48.9 26.9-78.5 0-70.7-57.3-128-128-128-29.6 0-56.9 10-78.5 26.9l-51.2-51.2zM366.2 311.7L232.3 177.8c15.7-11.2 34.9-17.8 55.7-17.8 53 0 96 43 96 96 0 20.8-6.6 40-17.8 55.7zM74.8 133.3c-35.5 38.5-59.7 80.2-72.3 110.4-3.3 7.9-3.3 16.7 0 24.6 14.9 35.7 46.2 87.7 93 131.1 47.1 43.7 111.8 80.6 192.6 80.6 40.6 0 77.1-9.3 109.4-24.1L373 431.5c-25.8 10.3-54.1 16.5-85 16.5-140.8 0-229.3-128-256-192 11.2-26.8 33.2-64.9 65.4-100.1L74.8 133.3z" />
-                </svg>
-                <?= $lang['no_ads'] ?>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2 mr-1" viewBox="0 0 576 512">
-                    <defs>
-                        <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#2dd4bf;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <path fill="url(#icon-gradient)" d="M378.9 64c-32.4 0-62.9 15.6-81.9 41.9l-28 38.7c-3 4.2-7.8 6.6-13 6.6s-10-2.5-13-6.6l-28-38.7 0 0c-19-26.3-49.5-41.9-81.9-41.9-55.9 0-101.1 45.3-101.1 101.1 0 55 34.4 107.1 71.8 152.5 42.1 51.2 93.4 96 128.5 122.9 6.2 4.8 14.4 7.5 23.7 7.5s17.4-2.7 23.7-7.5c35.1-26.8 86.4-71.7 128.5-122.9 37.3-45.4 71.8-97.5 71.8-152.5 0-55.9-45.3-101.1-101.1-101.1zM271 87.1c25-34.6 65.2-55.1 107.9-55.1 73.5 0 133.1 59.6 133.1 133.1 0 67.4-41.6 127.3-79.1 172.8-44.1 53.6-97.3 100.1-133.8 127.9-12.4 9.4-27.6 14.1-43.1 14.1s-30.8-4.6-43.1-14.1C176.4 438 123.2 391.5 79.1 338 41.6 292.4 0 232.5 0 165.1 0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1l15 20.7 15-20.7z" />
-                </svg>
-                <?= $lang['free'] ?>
+            
+            <p class="mt-3 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center gap-4">
+                <span class="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 384 512"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#3b82f6"/><stop offset="100%" style="stop-color:#2dd4bf"/></linearGradient></defs><path fill="url(#g1)" d="M96 96l0 64 192 0 0-64c0-53-43-96-96-96S96 43 96 96zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64zM32 224l0 224c0 17.7 14.3 32 32 32l256 0c17.7 0 32-14.3 32-32l0-224c0-17.7-14.3-32-32-32L64 192c-17.7 0-32 14.3-32 32z"/></svg>
+                    <?= $lang['no_tracking'] ?>
+                </span>
+                <span class="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 576 512"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#3b82f6"/><stop offset="100%" style="stop-color:#2dd4bf"/></linearGradient></defs><path fill="url(#g2)" d="M27.3-27.2c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l544 544c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L466.4 411.9c4.9-4.1 9.6-8.2 14.1-12.5 46.8-43.5 78.1-95.4 93-131.1 3.3-7.9 3.3-16.7 0-24.6-14.9-35.7-46.2-87.7-93-131.1-47.1-43.7-111.8-80.6-192.6-80.6-60 0-111.1 20.3-152.8 48.7L27.3-27.2zm131 131c36.4-23.7 79.7-39.8 129.7-39.8 140.8 0 229.3 128 256 192-13.3 32-42.1 80-85.2 120-4.9 4.5-9.9 8.9-15.1 13.2l-54.6-54.6c16.9-21.7 26.9-48.9 26.9-78.5 0-70.7-57.3-128-128-128-29.6 0-56.9 10-78.5 26.9l-51.2-51.2zM366.2 311.7L232.3 177.8c15.7-11.2 34.9-17.8 55.7-17.8 53 0 96 43 96 96 0 20.8-6.6 40-17.8 55.7zM74.8 133.3c-35.5 38.5-59.7 80.2-72.3 110.4-3.3 7.9-3.3 16.7 0 24.6 14.9 35.7 46.2 87.7 93 131.1 47.1 43.7 111.8 80.6 192.6 80.6 40.6 0 77.1-9.3 109.4-24.1L373 431.5c-25.8 10.3-54.1 16.5-85 16.5-140.8 0-229.3-128-256-192 11.2-26.8 33.2-64.9 65.4-100.1L74.8 133.3z" /></svg>
+                    <?= $lang['no_ads'] ?>
+                </span>
+                <span class="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 576 512"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#3b82f6"/><stop offset="100%" style="stop-color:#2dd4bf"/></linearGradient></defs><path fill="url(#g3)" d="M378.9 64c-32.4 0-62.9 15.6-81.9 41.9l-28 38.7c-3 4.2-7.8 6.6-13 6.6s-10-2.5-13-6.6l-28-38.7 0 0c-19-26.3-49.5-41.9-81.9-41.9-55.9 0-101.1 45.3-101.1 101.1 0 55 34.4 107.1 71.8 152.5 42.1 51.2 93.4 96 128.5 122.9 6.2 4.8 14.4 7.5 23.7 7.5s17.4-2.7 23.7-7.5c35.1-26.8 86.4-71.7 128.5-122.9 37.3-45.4 71.8-97.5 71.8-152.5 0-55.9-45.3-101.1-101.1-101.1zM271 87.1c25-34.6 65.2-55.1 107.9-55.1 73.5 0 133.1 59.6 133.1 133.1 0 67.4-41.6 127.3-79.1 172.8-44.1 53.6-97.3 100.1-133.8 127.9-12.4 9.4-27.6 14.1-43.1 14.1s-30.8-4.6-43.1-14.1C176.4 438 123.2 391.5 79.1 338 41.6 292.4 0 232.5 0 165.1 0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1l15 20.7 15-20.7z" /></svg>
+                    <?= $lang['free'] ?>
+                </span>
             </p>
 
             <div class="mt-8 flex justify-center gap-12">
@@ -182,29 +170,24 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     </div>
                     <a href="/" class="mt-6 inline-block text-blue-500 underline text-sm"><?= $lang['back'] ?></a>
                 </div>
-            <?php elseif ($slug && $slug !== 'index.php' && $slug !== 'admin'): ?>
+            <?php elseif ($is_view_page): ?>
                 <form method="POST" class="text-center">
                     <h2 class="text-xl mb-4"><?= $lang['view_desc'] ?></h2>
                     <div class="cf-turnstile flex justify-center mb-6" data-sitekey="<?= getenv('CF_SITE_KEY') ?>"></div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2"><?= $lang['btn_view'] ?> <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512">
-                            <path fill="currentColor" d="M288 64c-140.8 0-229.3 128-256 192 26.7 64 115.2 192 256 192 140.8 0 229.3-128 256-192-26.7-64-115.2-192-256-192zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1 3.3 7.9 3.3 16.7 0 24.6-14.9 35.7-46.2 87.7-93 131.1-47.1 43.7-111.8 80.6-192.6 80.6S142.5 443.2 95.4 399.4c-46.8-43.5-78.1-95.4-93-131.1-3.3-7.9-3.3-16.7 0-24.6 14.9-35.7 46.2-87.7 93-131.1zM288 352c53 0 96-43 96-96 0-43.3-28.7-79.9-68.1-91.9 2.7 8.8 4.1 18.2 4.1 27.9 0 53-43 96-96 96-9.7 0-19.1-1.4-27.9-4.1 11.9 39.4 48.6 68.1 91.9 68.1zM160.2 263.8c-.2-2.6-.2-5.2-.2-7.8 0-12.2 1.7-23.9 4.9-35 .3-.9 .5-1.8 .8-2.7 12.4-40.4 44.3-72.2 84.7-84.7 11.9-3.7 24.6-5.6 37.7-5.6 2.5 0 5 .1 7.4 .2l.4 0c67.1 4 120.2 59.7 120.2 127.8 0 70.7-57.3 128-128 128-68.1 0-123.8-53.2-127.8-120.2zm32.1-16.1c9.3 5.3 20.1 8.4 31.6 8.4 35.3 0 64-28.7 64-64 0-11.5-3-22.3-8.4-31.6-46.4 4-83.3 40.9-87.3 87.3z" />
-                        </svg>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
+                        <?= $lang['btn_view'] ?> 
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 576 512"><path fill="currentColor" d="M288 64c-140.8 0-229.3 128-256 192 26.7 64 115.2 192 256 192 140.8 0 229.3-128 256-192-26.7-64-115.2-192-256-192zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1 3.3 7.9 3.3 16.7 0 24.6-14.9 35.7-46.2 87.7-93 131.1-47.1 43.7-111.8 80.6-192.6 80.6S142.5 443.2 95.4 399.4c-46.8-43.5-78.1-95.4-93-131.1-3.3-7.9-3.3-16.7 0-24.6 14.9-35.7-46.2-87.7 93-131.1zM288 352c53 0 96-43 96-96 0-43.3-28.7-79.9-68.1-91.9 2.7 8.8 4.1 18.2 4.1 27.9 0 53-43 96-96 96-9.7 0-19.1-1.4-27.9-4.1 11.9 39.4 48.6 68.1 91.9 68.1zM160.2 263.8c-.2-2.6-.2-5.2-.2-7.8 0-12.2 1.7-23.9 4.9-35 .3-.9 .5-1.8 .8-2.7 12.4-40.4 44.3-72.2 84.7-84.7 11.9-3.7 24.6-5.6 37.7-5.6 2.5 0 5 .1 7.4 .2l.4 0c67.1 4 120.2 59.7 120.2 127.8 0 70.7-57.3 128-128 128-68.1 0-123.8-53.2-127.8-120.2zm32.1-16.1c9.3 5.3 20.1 8.4 31.6 8.4 35.3 0 64-28.7 64-64 0-11.5-3-22.3-8.4-31.6-46.4 4-83.3 40.9-87.3 87.3z" /></svg>
                     </button>
                 </form>
             <?php else: ?>
                 <form method="POST" class="space-y-4">
                     <input type="text" name="honeypot" class="hidden">
-                    <div>
-                        <input type="email" name="email" required placeholder="<?= $lang['input_placeholder'] ?>"
-                            class="w-full px-6 py-4 bg-gray-100 dark:bg-gray-700 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                    </div>
+                    <input type="email" name="email" required placeholder="<?= $lang['input_placeholder'] ?>"
+                        class="w-full px-6 py-4 bg-gray-100 dark:bg-gray-700 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition-all">
                     <div class="cf-turnstile flex justify-center" data-sitekey="<?= getenv('CF_SITE_KEY') ?>"></div>
                     <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
                         <?= $lang['btn_generate'] ?>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 576 512">
-                            <path fill="currentColor" d="M231.1 7.9c16-6.8 34-6.8 50 0L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.7 363.2-16.7 8-36.1 8-52.7 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L231.1 7.9zm37.5 29.4c-8-3.4-17-3.4-25 0l-176.7 75c-11.3 4.8-18.8 15.5-18.8 27.6 .5 94 39.3 259.8 195.4 334.5 7.9 3.8 17.2 3.8 25.1 0 156.1-74.7 195-240.4 195.5-334.5 .1-12.1-7.5-22.8-18.8-27.6l-176.7-75zm54.5 132.9c5.2-7.1 15.2-8.7 22.3-3.5s8.7 15.2 3.5 22.3L243.4 334.2c-2.8 3.8-7.1 6.2-11.8 6.5s-9.3-1.4-12.6-4.8l-54.4-56.3c-6.1-6.4-6-16.5 .4-22.6s16.5-5.9 22.6 .4l41.2 42.6 94.4-129.8z" />
-                        </svg>
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 512 512"><path fill="currentColor" d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
                     </button>
                 </form>
             <?php endif; ?>
@@ -218,9 +201,9 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     <?php foreach ($generated_links as $type => $val): ?>
                         <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
                             <code class="text-xs flex-1 truncate opacity-70 px-2"><?= htmlspecialchars($val) ?></code>
-                            <button @click="copyLink(<?= htmlspecialchars(json_encode($val)) ?>)" class="text-blue-500 hover:text-blue-400 p-2 shrink-0"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
-                                    <path fill="currentColor" d="M248 80L136 80c-13.3 0-24-10.7-24-24s10.7-24 24-24l112 0c13.3 0 24 10.7 24 24s-10.7 24-24 24zm0 32c28.2 0 51.6-20.9 55.4-48L320 64c17.7 0 32 14.3 32 32l0 352c0 17.7-14.3 32-32 32L64 480c-17.7 0-32-14.3-32-32L32 96c0-17.7 14.3-32 32-32l16.6 0c3.9 27.1 27.2 48 55.4 48l112 0zm50.6-80c-9-18.9-28.3-32-50.6-32L136 0C113.7 0 94.4 13.1 85.4 32L64 32C28.7 32 0 60.7 0 96L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-352c0-35.3-28.7-64-64-64l-21.4 0z" />
-                                </svg></button>
+                            <button @click="copyLink(<?= htmlspecialchars(json_encode($val)) ?>)" class="text-blue-500 hover:text-blue-400 p-2 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 384 512"><path fill="currentColor" d="M280 64h40c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128c0-35.3 28.7-64 64-64h40c8.8 0 16-7.2 16-16V48C120 21.5 141.5 0 168 0h48c26.5 0 48 21.5 48 48v16c0 8.8 7.2 16 16 16zM168 48v16h48V48c0-8.8-7.2-16-16-16h-48c-8.8 0-16 7.2-16 16zM64 112v352h256V112H64z" /></svg>
+                            </button>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -232,15 +215,16 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
         </footer>
     </div>
 
-    <div x-show="toast" x-cloak x-transition class="fixed top-10 bg-green-500 text-white px-6 py-3 rounded-full shadow-xl font-bold z-[100]" x-text="toastMsg"></div>
+    <div x-show="toast" x-cloak x-transition class="fixed top-10 left-1/2 -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-full shadow-xl font-bold z-[100]" x-text="toastMsg"></div>
 
     <button @click="darkMode = !darkMode; localStorage.setItem('theme', darkMode ? 'dark' : 'light')"
         class="fixed bottom-8 right-8 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 hover:scale-110 transition-transform z-50">
-        <span x-show="!darkMode"><svg xmlns="http://www.w3.org/2000/svg" height="1.2em" viewBox="0 0 512 512">
-                <path fill="currentColor" d="M256 32c9.5 0 18.9 .6 28 1.7-60.1 38.3-100 105.6-100 182.3 0 117.2 96.4 212.8 210.7 215.9-38.2 30.1-86.3 48.1-138.7 48.1-123.7 0-224-100.3-224-224S132.3 32 256 32zm0-32C114.6 0 0 114.6 0 256S114.6 512 256 512c68.8 0 131.3-27.2 177.3-71.4 7.3-7 9.4-17.9 5.3-27.1s-13.7-14.9-23.8-14.1c-105.4 8.4-198.8-77.3-198.8-183.4 0-72.1 41.5-134.6 102.1-164.8 9.1-4.5 14.3-14.3 13.1-24.4S322.6 8.5 312.7 6.3C294.4 2.2 275.4 0 256 0z" />
-            </svg></span><span x-show="darkMode"><svg xmlns="http://www.w3.org/2000/svg" height="1.2em" viewBox="0 0 512 512">
-                <path fill="currentColor" d="M240 104c0 8.8 7.2 16 16 16s16-7.2 16-16l0-88c0-8.8-7.2-16-16-16s-16 7.2-16 16l0 88zm16 88a64 64 0 1 1 0 128 64 64 0 1 1 0-128zm0 160a96 96 0 1 0 0-192 96 96 0 1 0 0 192zm0 160c8.8 0 16-7.2 16-16l0-80c0-8.8-7.2-16-16-16s-16 7.2-16 16l0 80c0 8.8 7.2 16 16 16zM0 256c0 8.8 7.2 16 16 16l80 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-80 0c-8.8 0-16 7.2-16 16zm408-16c-8.8 0-16 7.2-16 16s7.2 16 16 16l88 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-88 0zM75 437c6.2 6.2 16.4 6.2 22.6 0l56.6-56.6c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L75 414.4c-6.2 6.2-6.2 16.4 0 22.6zM352.2 137.2c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L437 97.6c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0l-62.2 62.2zM75 75c-6.2 6.2-6.2 16.4 0 22.6l56.6 56.6c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L97.6 75c-6.2-6.2-16.4-6.2-22.6 0zM374.8 352.2c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L414.4 437c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-62.2-62.2z" />
-            </svg></span>
+        <span x-show="!darkMode">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 512 512"><path fill="currentColor" d="M256 32c9.5 0 18.9 .6 28 1.7-60.1 38.3-100 105.6-100 182.3 0 117.2 96.4 212.8 210.7 215.9-38.2 30.1-86.3 48.1-138.7 48.1-123.7 0-224-100.3-224-224S132.3 32 256 32zm0-32C114.6 0 0 114.6 0 256S114.6 512 256 512c68.8 0 131.3-27.2 177.3-71.4 7.3-7 9.4-17.9 5.3-27.1s-13.7-14.9-23.8-14.1c-105.4 8.4-198.8-77.3-198.8-183.4 0-72.1 41.5-134.6 102.1-164.8 9.1-4.5 14.3-14.3 13.1-24.4S322.6 8.5 312.7 6.3C294.4 2.2 275.4 0 256 0z" /></svg>
+        </span>
+        <span x-show="darkMode">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 512 512"><path fill="currentColor" d="M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 70.5l-58-12.2c-2.4-.5-4.7-1.8-6.3-3.6L392.5 16.5c-6.1-8-17.4-9.4-25.1-3.1l-44 35.8c-1.9 1.5-4.2 2.4-6.6 2.4-2.4 0-4.7-.8-6.6-2.4l-44-35.8c-7.7-6.3-19-4.9-25.1 3.1L201.5 54.7c-1.6 1.8-3.9 3.1-6.3 3.6l-58 12.2c-9.9 2.1-16.1 11.8-13.8 21.6l12.2 58c.5 2.4 .5 4.9 0 7.3l-12.2 58c-2.3 9.8 3.9 19.5 13.8 21.6l58 12.2c2.4 .5 4.7 1.8 6.3 3.6l40.6 48.2c6.1 8 17.4 9.4 25.1 3.1l44-35.8c1.9-1.5 4.2-2.4 6.6-2.4s4.7 .8 6.6 2.4l44 35.8c7.7 6.3 19 4.9 25.1-3.1l40.6-48.2c1.6-1.8 3.9-3.1 6.3-3.6l58-12.2c9.9-2.1 16.1-11.8 13.8-21.6l-12.2-58c-.5-2.4-.5-4.9 0-7.3l12.2-58c2.3-9.8-3.9-19.5-13.8-21.6z" /></svg>
+        </span>
     </button>
 
     <script>
@@ -253,10 +237,11 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     this.$watch('darkMode', val => document.documentElement.classList.toggle('dark', val));
                 },
                 copyLink(text) {
+                    if (!navigator.clipboard) return;
                     navigator.clipboard.writeText(text).then(() => {
                         this.toastMsg = <?= json_encode($lang['copy_success']) ?>;
                         this.toast = true;
-                        setTimeout(() => this.toast = false, 2000);
+                        setTimeout(() => { this.toast = false; }, 2000);
                     });
                 }
             }))
