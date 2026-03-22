@@ -27,5 +27,6 @@ return [
     'cancel' => 'Abbrechen',
     'yes_delete' => 'Ja, löschen!',
     'database_cleared' => 'Datenbank wurde geleert! 🔥',
-    'admin_empty_db' => 'Datenbank leeren'
+    'admin_empty_db' => 'Datenbank leeren',
+    'copy' => 'Erstellt mit ❤️ und ☕️ von'
 ];
