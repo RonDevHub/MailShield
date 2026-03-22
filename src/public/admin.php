@@ -63,7 +63,7 @@ if (isset($_SESSION['admin_logged_in']) && isset($_POST['reset_db'])) {
 
             <div x-show="showConfirm" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
                 <div @click.away="showConfirm = false" class="bg-white dark:bg-gray-800 p-8 rounded-3xl max-w-sm w-full shadow-2xl border border-gray-200 dark:border-gray-700">
-                    <h2 class="text-xl font-bold mb-4"><?= ['sure'] ?></h2>
+                    <h2 class="text-xl font-bold mb-4"><?= $lang['sure'] ?></h2>
                     <p class="opacity-60 mb-8 text-sm text-center"><?= $lang['data_deleted'] ?></p>
                     <div class="flex gap-4">
                         <button @click="showConfirm = false" class="flex-1 py-3 rounded-xl bg-gray-200 dark:bg-gray-700 font-bold"><?= $lang['cancel'] ?></button>
