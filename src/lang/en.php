@@ -27,5 +27,6 @@ return [
     'cancel' => 'Cancel',
     'yes_delete' => 'Yes, delete it!',
     'database_cleared' => 'Database has been cleared! 🔥',
-    'admin_empty_db' => 'Clear Database'
+    'admin_empty_db' => 'Clear Database',
+    'copy' => 'Created with ❤️ and ☕️ by'
 ];
