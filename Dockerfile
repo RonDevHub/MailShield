@@ -1,16 +1,19 @@
 FROM php:8.3-fpm-alpine
 
-# System-Abhängigkeiten und SQLite-Header installieren
+# System-Abhängigkeiten installieren
+# postgresql-dev wird für pdo_pgsql benötigt
 RUN apk add --no-cache \
     nginx \
     supervisor \
     sed \
     sqlite-dev \
+    postgresql-dev \
+    libpq \
     libcap
 
 # PHP Extensions installieren
-# pdo_sqlite benötigt sqlite-dev während der Installation
-RUN docker-php-ext-install pdo pdo_sqlite
+# Wir installieren pdo_sqlite UND pdo_pgsql, damit das Image beides kann
+RUN docker-php-ext-install pdo pdo_sqlite pdo_pgsql
 
 # Arbeitsverzeichnis
 WORKDIR /var/www/html
