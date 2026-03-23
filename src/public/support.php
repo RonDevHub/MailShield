@@ -20,6 +20,7 @@ $t = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $t['title'] ?></title>
+    <link rel="icon" type="image/png" href="/img/mailshield.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' }</script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -56,7 +57,7 @@ $t = [
                             <span x-show="copied" class="text-green-500 italic">Kopiert!</span>
                         </button>
                     </div>
-                    <code class="text-[10px] sm:text-xs break-all opacity-80">DEINE_BTC_ADRESSE</code>
+                    <code class="text-[10px] sm:text-xs break-all opacity-80">bc1q4xg47x0vet8j7z5zpdqt85vvqt2dturtys7r04</code>
                 </div>
             </div>
 
