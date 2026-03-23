@@ -2,9 +2,16 @@ name: Docker Publish
 
 on:
   push:
-    branches: [ "main", "beta" ]
+    branches: [ "main" ]   # beta hier entfernt!
   release:
     types: [published]
+
+  workflow_dispatch:       # manueller Trigger für beta
+    inputs:
+      branch:
+        description: 'Branch auswählen'
+        required: true
+        default: 'beta'
 
 jobs:
   build:
@@ -16,6 +23,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
 
       # SCHRITT 1: Buildx Setup (Zwingend nötig für GHA-Caching)
       - name: Set up Docker Buildx
@@ -35,7 +44,7 @@ jobs:
           images: ghcr.io/rondevhub/mailshield
           tags: |
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
-            type=raw,value=beta,enable=${{ github.ref == 'refs/heads/beta' }}
+            type=raw,value=beta,enable=${{ github.event.inputs.branch == 'beta' }}
             type=semver,pattern={{version}}
 
       - name: Build and push
@@ -44,6 +53,5 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          # Jetzt funktioniert der Cache, da Buildx aktiv ist
           cache-from: type=gha
           cache-to: type=gha,mode=max
