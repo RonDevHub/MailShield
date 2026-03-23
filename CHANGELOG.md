@@ -3,4 +3,5 @@
 ### Fixed
 
 ### Added
-- Import and export of the database
+- SQLite (default, zero config), PostgreSQL (recommended for production) Switch via environment variables.
+
