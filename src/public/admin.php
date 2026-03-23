@@ -150,18 +150,19 @@ if (isset($_SESSION['admin_logged_in'])) {
 
                     <hr class="border-gray-200 dark:border-gray-700 my-4">
 
-                    <button @click="showConfirm = true" class="w-full bg-red-600/10 text-red-500 py-4 rounded-xl font-bold hover:bg-red-600 hover:text-white transition-all">Datenbank leeren 🔥</button>
+                    <button @click="showConfirm = true" class="w-full bg-red-600/10 text-red-500 py-4 rounded-xl font-bold hover:bg-red-600 hover:text-white transition-all"><?= $lang['admin_empty_db'] ?> 🔥</button>
                     <a href="?logout" class="block w-full bg-gray-200 dark:bg-gray-700 py-4 rounded-xl font-bold italic opacity-50 hover:opacity-100 transition-all">Logout</a>
                 </div>
             </div>
 
             <div x-show="showConfirm" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
                 <div @click.away="showConfirm = false" class="bg-white dark:bg-gray-800 p-8 rounded-3xl max-w-sm w-full shadow-2xl">
-                    <h2 class="text-xl font-bold mb-4">Sicher?</h2>
+                    <h2 class="text-xl font-bold mb-4"><?= $lang['sure'] ?></h2>
+                    <p class="opacity-60 mb-8 text-sm text-center"><?= $lang['data_deleted'] ?></p>
                     <div class="flex gap-4">
-                        <button @click="showConfirm = false" class="flex-1 py-3 rounded-xl bg-gray-200 dark:bg-gray-700">Nein</button>
+                        <button @click="showConfirm = false" class="flex-1 py-3 rounded-xl bg-gray-200 dark:bg-gray-700"><?= $lang['cancel'] ?></button>
                         <form method="POST" class="flex-1">
-                            <button name="reset_db" class="w-full py-3 rounded-xl bg-red-600 text-white font-bold">Ja</button>
+                            <button name="reset_db" class="w-full py-3 rounded-xl bg-red-600 text-white font-bold"><?= $lang['yes_delete'] ?></button>
                         </form>
                     </div>
                 </div>
