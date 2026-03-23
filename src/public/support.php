@@ -8,7 +8,7 @@ $lang = (file_exists($lang_file)) ? require $lang_file : require "../lang/en.php
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $lang['title'] ?></title>
+    <title><?= $lang['support_title'] ?></title>
     <link rel="icon" type="image/png" href="/img/mailshield.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' }</script>
@@ -24,8 +24,8 @@ $lang = (file_exists($lang_file)) ? require $lang_file : require "../lang/en.php
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>
             </div>
 
-            <h1 class="text-3xl font-extrabold mb-2"><?= $lang['title'] ?></h1>
-            <p class="text-gray-500 dark:text-gray-400 mb-8"><?= $lang['subtitle'] ?></p>
+            <h1 class="text-3xl font-extrabold mb-2"><?= $lang['support_title'] ?></h1>
+            <p class="text-gray-500 dark:text-gray-400 mb-8"><?= $lang['support_subtitle'] ?></p>
 
             <div class="grid gap-4">
                 <a href="https://paypal.me/Depressionist1/4,99" target="_blank" class="flex items-center justify-between p-4 bg-blue-600/10 hover:bg-blue-600 hover:text-white border border-blue-600/20 rounded-2xl transition-all group">
