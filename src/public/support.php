@@ -38,12 +38,17 @@ $lang = (file_exists($lang_file)) ? require $lang_file : require "../lang/en.php
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 opacity-50 group-hover:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
                 </a>
 
+                <a href="https://buymeacoffee.com/rondev" target="_blank" class="flex items-center justify-between p-4 bg-yellow-600/10 hover:bg-yellow-600 hover:text-white border border-yellow-600/20 rounded-2xl transition-all group">
+                    <span class="font-bold"><?= $lang['bmac'] ?></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 opacity-50 group-hover:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                </a>
+
                 <div x-data="{ copied: false }" class="p-4 bg-gray-100 dark:bg-gray-700/50 rounded-2xl border border-gray-200 dark:border-gray-600">
                     <div class="flex items-center justify-between mb-2">
                         <span class="text-xs font-bold uppercase tracking-widest opacity-50">Bitcoin (BTC)</span>
                         <button @click="navigator.clipboard.writeText('bc1q4xg47x0vet8j7z5zpdqt85vvqt2dturtys7r04'); copied = true; setTimeout(() => copied = false, 2000)" class="text-xs text-blue-500 hover:underline">
-                            <span x-show="!copied">Adresse kopieren</span>
-                            <span x-show="copied" class="text-green-500 italic">Kopiert!</span>
+                            <span x-show="!copied"><?= $lang['copy_adress'] ?></span>
+                            <span x-show="copied" class="text-green-500 italic"><?= $lang['copy_success'] ?></span>
                         </button>
                     </div>
                     <code class="text-[10px] sm:text-xs break-all opacity-80">bc1q4xg47x0vet8j7z5zpdqt85vvqt2dturtys7r04</code>
@@ -53,7 +58,7 @@ $lang = (file_exists($lang_file)) ? require $lang_file : require "../lang/en.php
             <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
                 <a href="/" class="text-sm font-medium opacity-50 hover:opacity-100 transition-all flex items-center justify-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-                    <?= $t['back'] ?>
+                    <?= $lang['back'] ?>
                 </a>
             </div>
         </div>
