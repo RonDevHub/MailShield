@@ -263,7 +263,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
              Removing it would be unfair to the work that was done.
         -->
         <footer class="mt-16 mb-8 text-center space-y-6">
-            <a href="/support" class="inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase opacity-30 hover:opacity-100 transition-all duration-300 group">
+            <a href="/support" class="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] uppercase opacity-30 hover:opacity-100 transition-all duration-300 group">
                 <span class="p-1.5 rounded-lg bg-gray-200 dark:bg-gray-800 group-hover:bg-red-500/10 group-hover:text-red-500 transition-colors shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.84-8.84 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
@@ -278,10 +278,14 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                 <div class="h-px w-8 bg-gradient-to-l from-transparent to-gray-300 dark:to-gray-700"></div>
             </div>
 
-            <p class="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-500">
+            <p class="text-[11px] uppercase tracking-widest text-gray-400 dark:text-gray-500">
                 <?= $lang['copy'] ?>
-                <a href="https://github.com/RonDevHub/MailShield" target="_blank" class="font-black text-gray-900 dark:text-gray-100 hover:text-blue-500 dark:hover:text-blue-400 transition-colors decoration-blue-500/30 underline underline-offset-4">
-                    RonDevHub
+                <a href="https://github.com/RonDevHub/MailShield"
+                    target="_blank"
+                    class="relative group inline-block font-black text-gray-900 dark:text-gray-100 transition-all duration-300 hover:scale-105">
+                    <span>RonDevHub</span>
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 group-hover:w-full"></span>
+                    <span class="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 blur-xl transition-all duration-500 -z-10 rounded-full"></span>
                 </a>
             </p>
         </footer>
