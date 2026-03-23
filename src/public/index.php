@@ -31,6 +31,12 @@ if ($slug === 'admin') {
     exit;
 }
 
+// Support-Routing
+if ($slug === 'support') {
+    require_once 'support.php';
+    exit;
+}
+
 $message = '';
 $generated_links = null;
 
