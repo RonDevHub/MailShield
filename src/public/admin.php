@@ -67,7 +67,7 @@ if (isset($_SESSION['admin_logged_in'])) {
 ?>
 <!DOCTYPE html>
 <html lang="de" x-data="{ darkMode: localStorage.getItem('theme') === 'dark', showConfirm: false }" :class="{ 'dark': darkMode }">
-<head>
+<head> 
     <meta charset="UTF-8">
     <title><?= $lang['admin_title'] ?? 'Admin Panel' ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
