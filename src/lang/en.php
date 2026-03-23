@@ -31,5 +31,10 @@ return [
     'yes_delete' => 'Yes, delete it!',
     'database_cleared' => 'Database has been cleared! 🔥',
     'admin_empty_db' => 'Clear Database',
+    'support_title' => 'Hunting Supplies for the Developer',
+    'support_subtitle' => 'Behind every blocked spam attack and every protected email address lies a lot of code and even more passion. Since hunting bots and data harvesters is hungry work, I appreciate any small refreshment! Your support helps me to further sharpen MailShield\'s defenses, keep the servers running, and ensure that not a single bot slips through your digital bulwark.',
+    'paypal' => 'PayPal',
+    'kofi' => 'Buy me a Coffee',
+    'crypto' => 'Crypto Workspace',
     'copy' => 'Created with ❤️ and ☕️ by'
 ];
