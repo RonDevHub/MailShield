@@ -1,4 +1,11 @@
-# 🛡️ MailShield - E-Mail Protection Service
+<h1 align="center">
+  <img src="https://mailshield.s3cr.net/img/icon.png" height="50"><br>
+  MailShield
+</h1>
+
+<p align="center">
+  <em>E-Mail Protection Service. Secure your inbox. Protect your identity.</em>
+</p>
 
 <div align="center">
   
