@@ -29,6 +29,15 @@ MailShield is a minimalist, resource-efficient PHP application designed to hide 
 - **Modern UI:** Built with Tailwind CSS, including Dark Mode support.
 - **Multilingual:** Automatically detects German and English.
 
+## Database Support
+
+MailShield supports:
+
+- SQLite (default, zero config)
+- PostgreSQL (recommended for production)
+
+Switch via environment variables.
+
 ### 🚀 Deployment (Docker/Portainer)
 Use this stack configuration for Portainer.
 ```
