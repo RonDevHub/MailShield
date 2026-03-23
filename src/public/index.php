@@ -223,7 +223,14 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
              It is a fair reference to the original author and does not affect the design.
              Removing it would be unfair to the work that was done.
         -->
-        
+        <footer class="mt-12 text-center pb-6">
+          <a href="/support" class="inline-flex items-center gap-2 text-xs font-medium opacity-30 hover:opacity-100 transition-all duration-300 group">
+          <span class="p-1.5 rounded-lg bg-gray-200 dark:bg-gray-700 group-hover:bg-red-500/10 group-hover:text-red-500 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.84-8.84 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </span>
+            <span class="tracking-widest uppercase">Support Project</span>
+          </a>
+        </footer>
         <footer class="text-center mt-8 mb-8">
             <p class="text-xs text-gray-500 dark:text-gray-400"><?= $lang['copy'] ?> <a href="https://github.com/RonDevHub/MailShield" class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400 font-semibold no-underline hover:underline decoration-teal-400" target="_blank">RonDevHub</a> | <a href="/support" class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400 font-semibold no-underline hover:underline decoration-teal-400">Support me</a></p>
         </footer>
