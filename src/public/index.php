@@ -325,4 +325,5 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
         })
     </script>
 </body>
+
 </html>
