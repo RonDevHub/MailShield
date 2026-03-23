@@ -31,5 +31,10 @@ return [
     'yes_delete' => 'Ja, löschen!',
     'database_cleared' => 'Datenbank wurde geleert! 🔥',
     'admin_empty_db' => 'Datenbank leeren',
+    'support_title' => 'Jagdproviant für den Entwickler',
+    'support_subtitle' => 'Hinter jedem verhinderten Spam-Angriff und jeder geschützten E-Mail-Adresse steckt eine Menge Code und noch mehr Leidenschaft. Da die Jagd auf Bots und Datenhändler bekanntlich hungrig macht, freue ich mich über jede kleine Stärkung! Deine Unterstützung hilft mir dabei, die Schilde von MailShield weiter zu schärfen, die Server am Laufen zu halten und dafür zu sorgen, dass kein einziger Bot durch dein digitales Bollwerk schlüpft.',
+    'paypal' => 'PayPal',
+    'kofi' => 'Buy me a Coffee',
+    'crypto' => 'Crypto Workspace',
     'copy' => 'Erstellt mit ❤️ und ☕️ von'
 ];
