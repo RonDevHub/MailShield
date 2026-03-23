@@ -10,6 +10,7 @@ return [
     'btn_view' => 'E-Mail show',
     'stats_protected' => 'Emails shielded',
     'stats_since' => 'Shielding since',
+    'copy_adress' => 'Copy address',
     'copy_success' => 'Copied!',
     'back' => 'Back',
     'back_main' => 'Back to the main page',
@@ -34,7 +35,8 @@ return [
     'support_title' => 'Hunting Supplies for the Developer',
     'support_subtitle' => 'Behind every blocked spam attack and every protected email address lies a lot of code and even more passion. Since hunting bots and data harvesters is hungry work, I appreciate any small refreshment! Your support helps me to further sharpen MailShield\'s defenses, keep the servers running, and ensure that not a single bot slips through your digital bulwark.',
     'paypal' => 'PayPal',
-    'kofi' => 'Buy me a Coffee',
+    'kofi' => 'ko-fi.com',
+    'bmac' => 'Buy me a Coffee',
     'crypto' => 'Crypto Workspace',
     'copy' => 'Created with ❤️ and ☕️ by'
 ];
