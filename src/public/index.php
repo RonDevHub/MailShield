@@ -90,6 +90,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
 ?>
 <!DOCTYPE html>
 <html lang="<?= $lang_code ?>" x-data="app" :class="{ 'dark': darkMode }">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -115,18 +116,26 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = { darkMode: 'class' }
+        tailwind.config = {
+            darkMode: 'class'
+        }
     </script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <style>[x-cloak] { display: none !important; }</style>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col items-center justify-center p-4">
 
     <?php if ($admin_enabled): ?>
         <a href="/admin" class="fixed top-4 right-4 text-xs opacity-20 hover:opacity-100 transition-opacity inline-flex items-center gap-1">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 512 512"><path fill="currentColor" d="M243.6 37.3c8-3.4 17-3.4 25 0l176.7 75c11.3 4.8 18.9 15.5 18.8 27.6-.5 94-39.4 259.8-195.5 334.5-7.9 3.8-17.2 3.8-25.1 0-156.1-74.7-195-240.4-195.4-334.5-.1-12.1 7.5-22.8 18.8-27.6l176.7-75zM281.1 7.8c-16-6.8-34-6.8-50 0L54.3 82.8c-22 9.3-38.4 31-38.3 57.2 .5 99.2 41.3 280.7 213.6 363.2 16.7 8 36.1 8 52.8 0 172.4-82.5 213.2-264 213.6-363.2 .1-26.2-16.3-47.9-38.3-57.2L281.1 7.8zM200 128l-21.3 0c-32.4 0-58.7 26.3-58.7 58.7l0 29.3c0 22.6 13.4 42.1 32.7 50.9l-15 29.9c-4 7.9-.7 17.5 7.2 21.5s17.5 .7 21.5-7.2L186.4 271c26-4.9 45.6-27.7 45.6-55l0-56 60.2 0c6.1 0 11.6 3.4 14.3 8.8l7.2 14.3c2.7 5.4 8.2 8.8 14.3 8.8l56 0 0 16c0 35.3-28.7 64-64 64l-48 0c-8.8 0-16 7.2-16 16l0 80c0 8.8 7.2 16 16 16s16-7.2 16-16l0-64 32 0c53 0 96-43 96-96l0-16c0-17.7-14.3-32-32-32l-46.1 0-2.7-5.5c-8.1-16.3-24.8-26.5-42.9-26.5L200 128zM175.8 240c-13.1-.1-23.7-10.8-23.7-24l0-29.3c0-10.9 6.6-20.3 16-24.4 3.3-1.4 6.9-2.2 10.7-2.2l21.3 0 0 56c0 13.2-10.6 23.9-23.7 24l-.5 0zM272 208a16 16 0 1 0 0-32 16 16 0 1 0 0 32z" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 512 512">
+                <path fill="currentColor" d="M243.6 37.3c8-3.4 17-3.4 25 0l176.7 75c11.3 4.8 18.9 15.5 18.8 27.6-.5 94-39.4 259.8-195.5 334.5-7.9 3.8-17.2 3.8-25.1 0-156.1-74.7-195-240.4-195.4-334.5-.1-12.1 7.5-22.8 18.8-27.6l176.7-75zM281.1 7.8c-16-6.8-34-6.8-50 0L54.3 82.8c-22 9.3-38.4 31-38.3 57.2 .5 99.2 41.3 280.7 213.6 363.2 16.7 8 36.1 8 52.8 0 172.4-82.5 213.2-264 213.6-363.2 .1-26.2-16.3-47.9-38.3-57.2L281.1 7.8zM200 128l-21.3 0c-32.4 0-58.7 26.3-58.7 58.7l0 29.3c0 22.6 13.4 42.1 32.7 50.9l-15 29.9c-4 7.9-.7 17.5 7.2 21.5s17.5 .7 21.5-7.2L186.4 271c26-4.9 45.6-27.7 45.6-55l0-56 60.2 0c6.1 0 11.6 3.4 14.3 8.8l7.2 14.3c2.7 5.4 8.2 8.8 14.3 8.8l56 0 0 16c0 35.3-28.7 64-64 64l-48 0c-8.8 0-16 7.2-16 16l0 80c0 8.8 7.2 16 16 16s16-7.2 16-16l0-64 32 0c53 0 96-43 96-96l0-16c0-17.7-14.3-32-32-32l-46.1 0-2.7-5.5c-8.1-16.3-24.8-26.5-42.9-26.5L200 128zM175.8 240c-13.1-.1-23.7-10.8-23.7-24l0-29.3c0-10.9 6.6-20.3 16-24.4 3.3-1.4 6.9-2.2 10.7-2.2l21.3 0 0 56c0 13.2-10.6 23.9-23.7 24l-.5 0zM272 208a16 16 0 1 0 0-32 16 16 0 1 0 0 32z" />
+            </svg>
         </a>
     <?php endif; ?>
 
@@ -139,18 +148,42 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                 </span>
             </h1>
             <p class="text-gray-500 dark:text-gray-400"><?= $lang['subtitle'] ?></p>
-            
+
             <p class="mt-3 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center gap-4">
                 <span class="flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 384 512"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#3b82f6"/><stop offset="100%" style="stop-color:#2dd4bf"/></linearGradient></defs><path fill="url(#g1)" d="M96 96l0 64 192 0 0-64c0-53-43-96-96-96S96 43 96 96zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64zM32 224l0 224c0 17.7 14.3 32 32 32l256 0c17.7 0 32-14.3 32-32l0-224c0-17.7-14.3-32-32-32L64 192c-17.7 0-32 14.3-32 32z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 384 512">
+                        <defs>
+                            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#3b82f6" />
+                                <stop offset="100%" style="stop-color:#2dd4bf" />
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#g1)" d="M96 96l0 64 192 0 0-64c0-53-43-96-96-96S96 43 96 96zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64zM32 224l0 224c0 17.7 14.3 32 32 32l256 0c17.7 0 32-14.3 32-32l0-224c0-17.7-14.3-32-32-32L64 192c-17.7 0-32 14.3-32 32z" />
+                    </svg>
                     <?= $lang['no_tracking'] ?>
                 </span>
                 <span class="flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 576 512"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#3b82f6"/><stop offset="100%" style="stop-color:#2dd4bf"/></linearGradient></defs><path fill="url(#g2)" d="M27.3-27.2c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l544 544c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L466.4 411.9c4.9-4.1 9.6-8.2 14.1-12.5 46.8-43.5 78.1-95.4 93-131.1 3.3-7.9 3.3-16.7 0-24.6-14.9-35.7-46.2-87.7-93-131.1-47.1-43.7-111.8-80.6-192.6-80.6-60 0-111.1 20.3-152.8 48.7L27.3-27.2zm131 131c36.4-23.7 79.7-39.8 129.7-39.8 140.8 0 229.3 128 256 192-13.3 32-42.1 80-85.2 120-4.9 4.5-9.9 8.9-15.1 13.2l-54.6-54.6c16.9-21.7 26.9-48.9 26.9-78.5 0-70.7-57.3-128-128-128-29.6 0-56.9 10-78.5 26.9l-51.2-51.2zM366.2 311.7L232.3 177.8c15.7-11.2 34.9-17.8 55.7-17.8 53 0 96 43 96 96 0 20.8-6.6 40-17.8 55.7zM74.8 133.3c-35.5 38.5-59.7 80.2-72.3 110.4-3.3 7.9-3.3 16.7 0 24.6 14.9 35.7 46.2 87.7 93 131.1 47.1 43.7 111.8 80.6 192.6 80.6 40.6 0 77.1-9.3 109.4-24.1L373 431.5c-25.8 10.3-54.1 16.5-85 16.5-140.8 0-229.3-128-256-192 11.2-26.8 33.2-64.9 65.4-100.1L74.8 133.3z" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 576 512">
+                        <defs>
+                            <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#3b82f6" />
+                                <stop offset="100%" style="stop-color:#2dd4bf" />
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#g2)" d="M27.3-27.2c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6l544 544c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L466.4 411.9c4.9-4.1 9.6-8.2 14.1-12.5 46.8-43.5 78.1-95.4 93-131.1 3.3-7.9 3.3-16.7 0-24.6-14.9-35.7-46.2-87.7-93-131.1-47.1-43.7-111.8-80.6-192.6-80.6-60 0-111.1 20.3-152.8 48.7L27.3-27.2zm131 131c36.4-23.7 79.7-39.8 129.7-39.8 140.8 0 229.3 128 256 192-13.3 32-42.1 80-85.2 120-4.9 4.5-9.9 8.9-15.1 13.2l-54.6-54.6c16.9-21.7 26.9-48.9 26.9-78.5 0-70.7-57.3-128-128-128-29.6 0-56.9 10-78.5 26.9l-51.2-51.2zM366.2 311.7L232.3 177.8c15.7-11.2 34.9-17.8 55.7-17.8 53 0 96 43 96 96 0 20.8-6.6 40-17.8 55.7zM74.8 133.3c-35.5 38.5-59.7 80.2-72.3 110.4-3.3 7.9-3.3 16.7 0 24.6 14.9 35.7 46.2 87.7 93 131.1 47.1 43.7 111.8 80.6 192.6 80.6 40.6 0 77.1-9.3 109.4-24.1L373 431.5c-25.8 10.3-54.1 16.5-85 16.5-140.8 0-229.3-128-256-192 11.2-26.8 33.2-64.9 65.4-100.1L74.8 133.3z" />
+                    </svg>
                     <?= $lang['no_ads'] ?>
                 </span>
                 <span class="flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 576 512"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#3b82f6"/><stop offset="100%" style="stop-color:#2dd4bf"/></linearGradient></defs><path fill="url(#g3)" d="M378.9 64c-32.4 0-62.9 15.6-81.9 41.9l-28 38.7c-3 4.2-7.8 6.6-13 6.6s-10-2.5-13-6.6l-28-38.7 0 0c-19-26.3-49.5-41.9-81.9-41.9-55.9 0-101.1 45.3-101.1 101.1 0 55 34.4 107.1 71.8 152.5 42.1 51.2 93.4 96 128.5 122.9 6.2 4.8 14.4 7.5 23.7 7.5s17.4-2.7 23.7-7.5c35.1-26.8 86.4-71.7 128.5-122.9 37.3-45.4 71.8-97.5 71.8-152.5 0-55.9-45.3-101.1-101.1-101.1zM271 87.1c25-34.6 65.2-55.1 107.9-55.1 73.5 0 133.1 59.6 133.1 133.1 0 67.4-41.6 127.3-79.1 172.8-44.1 53.6-97.3 100.1-133.8 127.9-12.4 9.4-27.6 14.1-43.1 14.1s-30.8-4.6-43.1-14.1C176.4 438 123.2 391.5 79.1 338 41.6 292.4 0 232.5 0 165.1 0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1l15 20.7 15-20.7z" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 576 512">
+                        <defs>
+                            <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#3b82f6" />
+                                <stop offset="100%" style="stop-color:#2dd4bf" />
+                            </linearGradient>
+                        </defs>
+                        <path fill="url(#g3)" d="M378.9 64c-32.4 0-62.9 15.6-81.9 41.9l-28 38.7c-3 4.2-7.8 6.6-13 6.6s-10-2.5-13-6.6l-28-38.7 0 0c-19-26.3-49.5-41.9-81.9-41.9-55.9 0-101.1 45.3-101.1 101.1 0 55 34.4 107.1 71.8 152.5 42.1 51.2 93.4 96 128.5 122.9 6.2 4.8 14.4 7.5 23.7 7.5s17.4-2.7 23.7-7.5c35.1-26.8 86.4-71.7 128.5-122.9 37.3-45.4 71.8-97.5 71.8-152.5 0-55.9-45.3-101.1-101.1-101.1zM271 87.1c25-34.6 65.2-55.1 107.9-55.1 73.5 0 133.1 59.6 133.1 133.1 0 67.4-41.6 127.3-79.1 172.8-44.1 53.6-97.3 100.1-133.8 127.9-12.4 9.4-27.6 14.1-43.1 14.1s-30.8-4.6-43.1-14.1C176.4 438 123.2 391.5 79.1 338 41.6 292.4 0 232.5 0 165.1 0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1l15 20.7 15-20.7z" />
+                    </svg>
                     <?= $lang['free'] ?>
                 </span>
             </p>
@@ -181,8 +214,10 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     <h2 class="text-xl mb-4"><?= $lang['view_desc'] ?></h2>
                     <div class="cf-turnstile flex justify-center mb-6" data-sitekey="<?= getenv('CF_SITE_KEY') ?>"></div>
                     <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
-                        <?= $lang['btn_view'] ?> 
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 576 512"><path fill="currentColor" d="M288 64c-140.8 0-229.3 128-256 192 26.7 64 115.2 192 256 192 140.8 0 229.3-128 256-192-26.7-64-115.2-192-256-192zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1 3.3 7.9 3.3 16.7 0 24.6-14.9 35.7-46.2 87.7-93 131.1-47.1 43.7-111.8 80.6-192.6 80.6S142.5 443.2 95.4 399.4c-46.8-43.5-78.1-95.4-93-131.1-3.3-7.9-3.3-16.7 0-24.6 14.9-35.7-46.2-87.7 93-131.1zM288 352c53 0 96-43 96-96 0-43.3-28.7-79.9-68.1-91.9 2.7 8.8 4.1 18.2 4.1 27.9 0 53-43 96-96 96-9.7 0-19.1-1.4-27.9-4.1 11.9 39.4 48.6 68.1 91.9 68.1zM160.2 263.8c-.2-2.6-.2-5.2-.2-7.8 0-12.2 1.7-23.9 4.9-35 .3-.9 .5-1.8 .8-2.7 12.4-40.4 44.3-72.2 84.7-84.7 11.9-3.7 24.6-5.6 37.7-5.6 2.5 0 5 .1 7.4 .2l.4 0c67.1 4 120.2 59.7 120.2 127.8 0 70.7-57.3 128-128 128-68.1 0-123.8-53.2-127.8-120.2zm32.1-16.1c9.3 5.3 20.1 8.4 31.6 8.4 35.3 0 64-28.7 64-64 0-11.5-3-22.3-8.4-31.6-46.4 4-83.3 40.9-87.3 87.3z" /></svg>
+                        <?= $lang['btn_view'] ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 576 512">
+                            <path fill="currentColor" d="M288 64c-140.8 0-229.3 128-256 192 26.7 64 115.2 192 256 192 140.8 0 229.3-128 256-192-26.7-64-115.2-192-256-192zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1 3.3 7.9 3.3 16.7 0 24.6-14.9 35.7-46.2 87.7-93 131.1-47.1 43.7-111.8 80.6-192.6 80.6S142.5 443.2 95.4 399.4c-46.8-43.5-78.1-95.4-93-131.1-3.3-7.9-3.3-16.7 0-24.6 14.9-35.7-46.2-87.7 93-131.1zM288 352c53 0 96-43 96-96 0-43.3-28.7-79.9-68.1-91.9 2.7 8.8 4.1 18.2 4.1 27.9 0 53-43 96-96 96-9.7 0-19.1-1.4-27.9-4.1 11.9 39.4 48.6 68.1 91.9 68.1zM160.2 263.8c-.2-2.6-.2-5.2-.2-7.8 0-12.2 1.7-23.9 4.9-35 .3-.9 .5-1.8 .8-2.7 12.4-40.4 44.3-72.2 84.7-84.7 11.9-3.7 24.6-5.6 37.7-5.6 2.5 0 5 .1 7.4 .2l.4 0c67.1 4 120.2 59.7 120.2 127.8 0 70.7-57.3 128-128 128-68.1 0-123.8-53.2-127.8-120.2zm32.1-16.1c9.3 5.3 20.1 8.4 31.6 8.4 35.3 0 64-28.7 64-64 0-11.5-3-22.3-8.4-31.6-46.4 4-83.3 40.9-87.3 87.3z" />
+                        </svg>
                     </button>
                 </form>
             <?php else: ?>
@@ -193,7 +228,9 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     <div class="cf-turnstile flex justify-center" data-sitekey="<?= getenv('CF_SITE_KEY') ?>"></div>
                     <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
                         <?= $lang['btn_generate'] ?>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 512 512"><path fill="currentColor" d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 512 512">
+                            <path fill="currentColor" d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                        </svg>
                     </button>
                 </form>
             <?php endif; ?>
@@ -208,14 +245,16 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                         <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
                             <code class="text-xs flex-1 truncate opacity-70 px-2"><?= htmlspecialchars($val) ?></code>
                             <button @click="copyLink(<?= htmlspecialchars(json_encode($val)) ?>)" class="text-blue-500 hover:text-blue-400 p-2 shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 384 512"><path fill="currentColor" d="M280 64h40c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128c0-35.3 28.7-64 64-64h40c8.8 0 16-7.2 16-16V48C120 21.5 141.5 0 168 0h48c26.5 0 48 21.5 48 48v16c0 8.8 7.2 16 16 16zM168 48v16h48V48c0-8.8-7.2-16-16-16h-48c-8.8 0-16 7.2-16 16zM64 112v352h256V112H64z" /></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 384 512">
+                                    <path fill="currentColor" d="M280 64h40c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128c0-35.3 28.7-64 64-64h40c8.8 0 16-7.2 16-16V48C120 21.5 141.5 0 168 0h48c26.5 0 48 21.5 48 48v16c0 8.8 7.2 16 16 16zM168 48v16h48V48c0-8.8-7.2-16-16-16h-48c-8.8 0-16 7.2-16 16zM64 112v352h256V112H64z" />
+                                </svg>
                             </button>
                         </div>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
         </main>
-        
+
         <!-- Bitte diesen kleinen Footer-Link nicht entfernen.  
              Er ist ein fairer Hinweis auf den ursprünglichen Autor und beeinträchtigt das Design nicht.
              Das Entfernen wäre unfair gegenüber der geleisteten Arbeit.
@@ -223,16 +262,28 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
              It is a fair reference to the original author and does not affect the design.
              Removing it would be unfair to the work that was done.
         -->
-        <footer class="mt-12 text-center pb-6">
-          <a href="/support" class="inline-flex items-center gap-2 text-xs font-medium opacity-30 hover:opacity-100 transition-all duration-300 group">
-          <span class="p-1.5 rounded-lg bg-gray-200 dark:bg-gray-700 group-hover:bg-red-500/10 group-hover:text-red-500 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.84-8.84 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-              </span>
-            <span class="tracking-widest uppercase">Support Project</span>
-          </a>
-        </footer>
-        <footer class="text-center mt-8 mb-8">
-            <p class="text-xs text-gray-500 dark:text-gray-400"><?= $lang['copy'] ?> <a href="https://github.com/RonDevHub/MailShield" class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400 font-semibold no-underline hover:underline decoration-teal-400" target="_blank">RonDevHub</a> | <a href="/support" class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400 font-semibold no-underline hover:underline decoration-teal-400">Support me</a></p>
+        <footer class="mt-16 mb-8 text-center space-y-6">
+            <a href="/support" class="inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] uppercase opacity-30 hover:opacity-100 transition-all duration-300 group">
+                <span class="p-1.5 rounded-lg bg-gray-200 dark:bg-gray-800 group-hover:bg-red-500/10 group-hover:text-red-500 transition-colors shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.84-8.84 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                    </svg>
+                </span>
+                Support Project
+            </a>
+
+            <div class="flex justify-center items-center gap-4">
+                <div class="h-px w-8 bg-gradient-to-r from-transparent to-gray-300 dark:to-gray-700"></div>
+                <div class="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+                <div class="h-px w-8 bg-gradient-to-l from-transparent to-gray-300 dark:to-gray-700"></div>
+            </div>
+
+            <p class="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-500">
+                <?= $lang['copy'] ?>
+                <a href="https://github.com/RonDevHub/MailShield" target="_blank" class="font-black text-gray-900 dark:text-gray-100 hover:text-blue-500 dark:hover:text-blue-400 transition-colors decoration-blue-500/30 underline underline-offset-4">
+                    RonDevHub
+                </a>
+            </p>
         </footer>
     </div>
 
@@ -261,11 +312,14 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     navigator.clipboard.writeText(text).then(() => {
                         this.toastMsg = <?= json_encode($lang['copy_success']) ?>;
                         this.toast = true;
-                        setTimeout(() => { this.toast = false; }, 2000);
+                        setTimeout(() => {
+                            this.toast = false;
+                        }, 2000);
                     });
                 }
             }))
         })
     </script>
 </body>
+
 </html>
