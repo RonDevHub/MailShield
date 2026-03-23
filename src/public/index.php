@@ -127,7 +127,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
     <div class="max-w-xl w-full">
         <header class="text-center mb-8">
             <h1 class="text-5xl font-extrabold mb-4 flex items-center justify-center gap-3">
-                <img src="/img/mailshield.png" alt="Logo" class="h-[1em] w-auto">
+                <img src="/img/icon.png" alt="Logo" class="h-[1em] w-auto">
                 <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">
                     <?= $lang['title'] ?>
                 </span>
