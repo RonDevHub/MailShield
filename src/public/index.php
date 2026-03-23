@@ -278,7 +278,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                 <div class="h-px w-8 bg-gradient-to-l from-transparent to-gray-300 dark:to-gray-700"></div>
             </div>
 
-            <p class="text-[11px] uppercase tracking-widest text-gray-400 dark:text-gray-500">
+            <p class="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-500">
                 <?= $lang['copy'] ?>
                 <a href="https://github.com/RonDevHub/MailShield"
                     target="_blank"
@@ -325,5 +325,4 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
         })
     </script>
 </body>
-
 </html>
