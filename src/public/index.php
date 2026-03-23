@@ -5,7 +5,7 @@ require_once '../core/Crypto.php';
 require_once '../core/Database.php';
 require_once '../core/RateLimiter.php';
 
-$db_instance = new Database(getenv('DB_PATH') ?: 'data/mailshield.sqlite');
+$db_instance = new Database(); // Holt sich alles selbst aus ENV
 $db = $db_instance->getDB();
 $limiter = new RateLimiter($db);
 $app_key = getenv('APP_KEY');
