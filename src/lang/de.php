@@ -10,6 +10,7 @@ return [
     'btn_view' => 'E-Mail Anzeigen',
     'stats_protected' => 'Mails geschützt',
     'stats_since' => 'Beschützt seit',
+    'copy_adress' => 'Adresse kopieren',
     'copy_success' => 'Kopiert!',
     'back' => 'Zurück',
     'back_main' => 'Zurück zur Hauptseite',
@@ -34,7 +35,8 @@ return [
     'support_title' => 'Jagdproviant für den Entwickler',
     'support_subtitle' => 'Hinter jedem verhinderten Spam-Angriff und jeder geschützten E-Mail-Adresse steckt eine Menge Code und noch mehr Leidenschaft. Da die Jagd auf Bots und Datenhändler bekanntlich hungrig macht, freue ich mich über jede kleine Stärkung! Deine Unterstützung hilft mir dabei, die Schilde von MailShield weiter zu schärfen, die Server am Laufen zu halten und dafür zu sorgen, dass kein einziger Bot durch dein digitales Bollwerk schlüpft.',
     'paypal' => 'PayPal',
-    'kofi' => 'Buy me a Coffee',
+    'kofi' => 'ko-fi.com',
+    'bmac' => 'Buy me a Coffee',
     'crypto' => 'Crypto Workspace',
     'copy' => 'Erstellt mit ❤️ und ☕️ von'
 ];
