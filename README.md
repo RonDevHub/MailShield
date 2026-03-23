@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://mailshield.s3cr.net/img/icon.png" height="50"><br>
+  <img src="https://mail-shield.net/img/icon.png" height="50"><br>
   MailShield
 </h1>
 
