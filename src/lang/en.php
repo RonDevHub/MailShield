@@ -46,5 +46,13 @@ return [
     'kofi' => 'ko-fi.com',
     'bmac' => 'Buy me a Coffee',
     'crypto' => 'Crypto Workspace',
+    'how_it_works_title' => 'How It Works',
+    'how_it_works_subtitle' => 'Protect your email in 3 simple steps',
+    'step1_title' => 'Enter Email',
+    'step1_desc' => 'Type your email address in the form above',
+    'step2_title' => 'Get Protected Link',
+    'step2_desc' => 'We generate a unique, protected link for you',
+    'step3_title' => 'Share Safely',
+    'step3_desc' => 'Only humans can reveal your real email',
     'copy' => 'Created with ❤️ and ☕️ by'
 ];
