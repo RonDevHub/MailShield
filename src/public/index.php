@@ -215,7 +215,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     <span class="text-xs uppercase tracking-widest opacity-60"><?= $lang['stats_protected'] ?></span>
                 </div>
                 <div class="text-center border-l border-gray-200 dark:border-gray-700 pl-12">
-                    <span class="block text-3xl font-bold text-teal-500"><?= date('m/Y', strtotime($db_since)) ?></span>
+                    <span class="block text-3xl font-bold text-teal-500"><?= date('m/y', strtotime($db_since)) ?></span>
                     <span class="text-xs uppercase tracking-widest opacity-60"><?= $lang['stats_since'] ?></span>
                 </div>
             </div>
