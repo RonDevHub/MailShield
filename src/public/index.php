@@ -170,8 +170,8 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
             </h1>
             <p class="text-gray-500 dark:text-gray-400"><?= $lang['subtitle'] ?></p>
 
-            <p class="mt-3 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center gap-4">
-                <span class="flex items-center gap-1">
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[10px] uppercase tracking-widest font-bold text-gray-400 dark:text-gray-500">
+                <span class="flex items-center gap-2 px-3 py-1.5 bg-gray-100/50 dark:bg-gray-800/40 rounded-full border border-gray-200/20 dark:border-gray-700/20 transition-colors hover:text-blue-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 384 512">
                         <defs>
                             <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -183,7 +183,8 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     </svg>
                     <?= $lang['no_tracking'] ?>
                 </span>
-                <span class="flex items-center gap-1">
+
+                <span class="flex items-center gap-2 px-3 py-1.5 bg-gray-100/50 dark:bg-gray-800/40 rounded-full border border-gray-200/20 dark:border-gray-700/20 transition-colors hover:text-blue-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 576 512">
                         <defs>
                             <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -195,7 +196,8 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     </svg>
                     <?= $lang['no_ads'] ?>
                 </span>
-                <span class="flex items-center gap-1">
+
+                <span class="flex items-center gap-2 px-3 py-1.5 bg-gray-100/50 dark:bg-gray-800/40 rounded-full border border-gray-200/20 dark:border-gray-700/20 transition-colors hover:text-blue-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 576 512">
                         <defs>
                             <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -207,7 +209,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     </svg>
                     <?= $lang['free'] ?>
                 </span>
-            </p>
+            </div>
 
             <div class="mt-8 flex justify-center gap-12">
                 <div class="text-center">
@@ -354,4 +356,5 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
         })
     </script>
 </body>
+
 </html>
