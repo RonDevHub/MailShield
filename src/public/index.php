@@ -5,7 +5,7 @@ require_once '../core/Crypto.php';
 require_once '../core/Database.php';
 require_once '../core/RateLimiter.php';
 
-$db_instance = new Database(); // Holt sich alles selbst aus ENV
+$db_instance = new Database(); // Retrieves everything from ENV
 $db = $db_instance->getDB();
 $limiter = new RateLimiter($db);
 $app_key = getenv('APP_KEY');
@@ -320,7 +320,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
     <div x-show="toast" x-cloak x-transition class="fixed top-10 left-1/2 -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-full shadow-xl font-bold z-[100]" x-text="toastMsg"></div>
 
     <script>
-        // Globaler Callback für Turnstile (außerhalb von Alpine)
+        // Global callback for turnstiles (outside of Alpine)
         function onCaptchaVerified(token) {
             window.dispatchEvent(new CustomEvent('captcha-success', {
                 detail: token
@@ -335,7 +335,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                 captchaVerified: false,
                 init() {
                     this.$watch('darkMode', val => document.documentElement.classList.toggle('dark', val));
-                    // Event Listener für erfolgreiches Captcha
+                    // Event listener for successful CAPTCHA
                     window.addEventListener('captcha-success', () => {
                         this.captchaVerified = true;
                     });
