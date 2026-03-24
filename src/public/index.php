@@ -37,6 +37,12 @@ if ($slug === 'support') {
     exit;
 }
 
+// Support-Routing
+if ($slug === 'badge') {
+    require_once 'badge.php';
+    exit;
+}
+
 $message = '';
 $generated_links = null;
 
@@ -66,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
         $full_url = $app_url . '/' . $final_slug;
         
         // Badge URLs
-        $badge_url = $app_url . '/badge.php';
+        $badge_url = $app_url . '/badge';
         $badge_md = '[![Protected by MailShield](' . $badge_url . ')](' . $full_url . ')';
         $badge_html = '<a href="' . $full_url . '"><img src="' . $badge_url . '" alt="Protected by MailShield"></a>';
 
@@ -298,9 +304,9 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     </div>
 
                     <div class="pt-4 border-t border-gray-100 dark:border-gray-700">
-                        <p class="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3 text-center"><?= $lang['badge_promo'] ?? 'Promote your protection' ?></p>
+                        <p class="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3 text-center"><?= $lang['badge_promo'] ?></p>
                         <div class="flex flex-col items-center gap-4">
-                            <img src="/badge.php" alt="MailShield Badge" class="h-8">
+                            <img src="/badge" alt="MailShield Badge" class="h-8">
                             
                             <div class="w-full space-y-2">
                                 <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
