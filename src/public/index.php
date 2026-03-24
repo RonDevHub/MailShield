@@ -143,16 +143,25 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
         <header class="text-center mb-8">
             <h1 class="text-5xl font-extrabold mb-4 flex items-center justify-center gap-3">
                 <img src="/img/icon.png" alt="Logo" class="h-[1em] w-auto">
+
                 <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">
                     <?= $lang['title'] ?>
                 </span>
+
                 <button @click="darkMode = !darkMode; localStorage.setItem('theme', darkMode ? 'dark' : 'light')"
-                    class="fixed bottom-8 right-8 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 hover:scale-110 transition-transform z-50">
-                    <span x-show="!darkMode"><svg xmlns="http://www.w3.org/2000/svg" height="1.2em" viewBox="0 0 512 512">
+                    class="p-2 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 hover:scale-110 transition-transform">
+
+                    <span x-show="!darkMode" class="text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
                             <path fill="currentColor" d="M256 32c9.5 0 18.9 .6 28 1.7-60.1 38.3-100 105.6-100 182.3 0 117.2 96.4 212.8 210.7 215.9-38.2 30.1-86.3 48.1-138.7 48.1-123.7 0-224-100.3-224-224S132.3 32 256 32zm0-32C114.6 0 0 114.6 0 256S114.6 512 256 512c68.8 0 131.3-27.2 177.3-71.4 7.3-7 9.4-17.9 5.3-27.1s-13.7-14.9-23.8-14.1c-105.4 8.4-198.8-77.3-198.8-183.4 0-72.1 41.5-134.6 102.1-164.8 9.1-4.5 14.3-14.3 13.1-24.4S322.6 8.5 312.7 6.3C294.4 2.2 275.4 0 256 0z" />
-                        </svg></span><span x-show="darkMode"><svg xmlns="http://www.w3.org/2000/svg" height="1.2em" viewBox="0 0 512 512">
+                        </svg>
+                    </span>
+
+                    <span x-show="darkMode" class="text-yellow-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
                             <path fill="currentColor" d="M240 104c0 8.8 7.2 16 16 16s16-7.2 16-16l0-88c0-8.8-7.2-16-16-16s-16 7.2-16 16l0 88zm16 88a64 64 0 1 1 0 128 64 64 0 1 1 0-128zm0 160a96 96 0 1 0 0-192 96 96 0 1 0 0 192zm0 160c8.8 0 16-7.2 16-16l0-80c0-8.8-7.2-16-16-16s-16 7.2-16 16l0 80c0 8.8 7.2 16 16 16zM0 256c0 8.8 7.2 16 16 16l80 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-80 0c-8.8 0-16 7.2-16 16zm408-16c-8.8 0-16 7.2-16 16s7.2 16 16 16l88 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-88 0zM75 437c6.2 6.2 16.4 6.2 22.6 0l56.6-56.6c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L75 414.4c-6.2 6.2-6.2 16.4 0 22.6zM352.2 137.2c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L437 97.6c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0l-62.2 62.2zM75 75c-6.2 6.2-6.2 16.4 0 22.6l56.6 56.6c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L97.6 75c-6.2-6.2-16.4-6.2-22.6 0zM374.8 352.2c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L414.4 437c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-62.2-62.2z" />
-                        </svg></span>
+                        </svg>
+                    </span>
                 </button>
             </h1>
             <p class="text-gray-500 dark:text-gray-400"><?= $lang['subtitle'] ?></p>
