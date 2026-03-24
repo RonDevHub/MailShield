@@ -68,8 +68,17 @@ $lang = (file_exists($lang_file)) ? require $lang_file : require "../lang/en.php
             </div>
         </div>
         
-        <footer class="text-center mt-8 mb-8">
-            <p class="text-xs text-gray-500 dark:text-gray-400"><?= $lang['copy'] ?> <a href="https://github.com/RonDevHub/MailShield" class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400 font-semibold no-underline hover:underline decoration-teal-400" target="_blank">RonDevHub</a></p>
+        <footer class="mt-16 mb-8 text-center space-y-6">
+            <p class="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-500">
+                <?= $lang['copy'] ?>
+                <a href="https://github.com/RonDevHub/MailShield"
+                    target="_blank"
+                    class="relative group inline-block font-black text-gray-900 dark:text-gray-100 transition-all duration-300 hover:scale-105">
+                    <span>RonDevHub</span>
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 group-hover:w-full"></span>
+                    <span class="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 blur-xl transition-all duration-500 -z-10 rounded-full"></span>
+                </a>
+            </p>
         </footer>
     </div>
 
