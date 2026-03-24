@@ -64,10 +64,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
 
         $app_url = rtrim(getenv('APP_URL') ?: 'http://localhost', '/');
         $full_url = $app_url . '/' . $final_slug;
+        
+        // Badge URLs
+        $badge_url = $app_url . '/badge.php';
+        $badge_md = '[![Protected by MailShield](' . $badge_url . ')](' . $full_url . ')';
+        $badge_html = '<a href="' . $full_url . '"><img src="' . $badge_url . '" alt="Protected by MailShield"></a>';
+
         $generated_links = [
             'url'      => $full_url,
             'html'     => '<a href="' . $full_url . '" target="_blank">' . $lang['view_title'] . '</a>',
-            'markdown' => '[' . $lang['view_title'] . '](' . $full_url . ')'
+            'markdown' => '[' . $lang['view_title'] . '](' . $full_url . ')',
+            'badge_md' => $badge_md,
+            'badge_html' => $badge_html
         ];
     }
 }
@@ -245,7 +253,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                         class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
                         <?= $lang['btn_view'] ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 576 512">
-                            <path fill="currentColor" d="M288 64c-140.8 0-229.3 128-256 192 26.7 64 115.2 192 256 192 140.8 0 229.3-128 256-192-26.7-64-115.2-192-256-192zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1 3.3 7.9 3.3 16.7 0 24.6-14.9 35.7-46.2 87.7-93 131.1-47.1 43.7-111.8 80.6-192.6 80.6S142.5 443.2 95.4 399.4c-46.8-43.5-78.1-95.4-93-131.1-3.3-7.9-3.3-16.7 0-24.6 14.9-35.7-46.2-87.7 93-131.1zM288 352c53 0 96-43 96-96 0-43.3-28.7-79.9-68.1-91.9 2.7 8.8 4.1 18.2 4.1 27.9 0 53-43 96-96 96-9.7 0-19.1-1.4-27.9-4.1 11.9 39.4 48.6 68.1 91.9 68.1zM160.2 263.8c-.2-2.6-.2-5.2-.2-7.8 0-12.2 1.7-23.9 4.9-35 .3-.9 .5-1.8 .8-2.7 12.4-40.4 44.3-72.2 84.7-84.7 11.9-3.7 24.6-5.6 37.7-5.6 2.5 0 5 .1 7.4 .2l.4 0c67.1 4 120.2 59.7 120.2 127.8 0 70.7-57.3 128-128 128-68.1 0-123.8-53.2-127.8-120.2zm32.1-16.1c9.3 5.3 20.1 8.4 31.6 8.4 35.3 0 64-28.7 64-64 0-11.5-3-22.3-8.4-31.6-46.4 4-83.3 40.9-87.3 87.3z" />
+                            <path fill="currentColor" d="M288 64c-140.8 0-229.3 128-256 192 26.7 64 115.2 192 256 192 140.8 0 229.3-128 256-192-26.7-64-115.2-192-256-192zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1 3.3 7.9 3.3 16.7 0 24.6-14.9-35.7-46.2-87.7-93-131.1-47.1 43.7-111.8 80.6-192.6 80.6S142.5 443.2 95.4 399.4c-46.8-43.5-78.1-95.4-93-131.1-3.3-7.9-3.3-16.7 0-24.6 14.9-35.7-46.2-87.7 93-131.1zM288 352c53 0 96-43 96-96 0-43.3-28.7-79.9-68.1-91.9 2.7 8.8 4.1 18.2 4.1 27.9 0 53-43 96-96 96-9.7 0-19.1-1.4-27.9-4.1 11.9 39.4 48.6 68.1 91.9 68.1zM160.2 263.8c-.2-2.6-.2-5.2-.2-7.8 0-12.2 1.7-23.9 4.9-35 .3-.9 .5-1.8 .8-2.7 12.4-40.4 44.3-72.2 84.7-84.7 11.9-3.7 24.6-5.6 37.7-5.6 2.5 0 5 .1 7.4 .2l.4 0c67.1 4 120.2 59.7 120.2 127.8 0 70.7-57.3 128-128 128-68.1 0-123.8-53.2-127.8-120.2zm32.1-16.1c9.3 5.3 20.1 8.4 31.6 8.4 35.3 0 64-28.7 64-64 0-11.5-3-22.3-8.4-31.6-46.4 4-83.3 40.9-87.3 87.3z" />
                         </svg>
                     </button>
                 </form>
@@ -275,17 +283,43 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
             <?php endif; ?>
 
             <?php if ($generated_links): ?>
-                <div class="mt-8 space-y-3">
-                    <?php foreach ($generated_links as $type => $val): ?>
-                        <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
-                            <code class="text-xs flex-1 truncate opacity-70 px-2"><?= htmlspecialchars($val) ?></code>
-                            <button @click="copyLink(<?= htmlspecialchars(json_encode($val)) ?>)" class="text-blue-500 hover:text-blue-400 p-2 shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 384 512">
-                                    <path fill="currentColor" d="M280 64h40c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128c0-35.3 28.7-64 64-64h40c8.8 0 16-7.2 16-16V48C120 21.5 141.5 0 168 0h48c26.5 0 48 21.5 48 48v16c0 8.8 7.2 16 16 16zM168 48v16h48V48c0-8.8-7.2-16-16-16h-48c-8.8 0-16 7.2-16 16zM64 112v352h256V112H64z" />
-                                </svg>
-                            </button>
+                <div class="mt-8 space-y-4">
+                    <div class="space-y-2">
+                        <?php foreach (['url', 'html', 'markdown'] as $key): ?>
+                            <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+                                <code class="text-xs flex-1 truncate opacity-70 px-2"><?= htmlspecialchars($generated_links[$key]) ?></code>
+                                <button @click="copyLink(<?= htmlspecialchars(json_encode($generated_links[$key])) ?>)" class="text-blue-500 hover:text-blue-400 p-2 shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 384 512">
+                                        <path fill="currentColor" d="M280 64h40c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128c0-35.3 28.7-64 64-64h40c8.8 0 16-7.2 16-16V48C120 21.5 141.5 0 168 0h48c26.5 0 48 21.5 48 48v16c0 8.8 7.2 16 16 16zM168 48v16h48V48c0-8.8-7.2-16-16-16h-48c-8.8 0-16 7.2-16 16zM64 112v352h256V112H64z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-100 dark:border-gray-700">
+                        <p class="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3 text-center"><?= $lang['badge_promo'] ?? 'Promote your protection' ?></p>
+                        <div class="flex flex-col items-center gap-4">
+                            <img src="/badge.php" alt="MailShield Badge" class="h-8">
+                            
+                            <div class="w-full space-y-2">
+                                <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+                                    <span class="text-[9px] font-bold opacity-40 uppercase w-12">MD</span>
+                                    <code class="text-[10px] flex-1 truncate opacity-70"><?= htmlspecialchars($generated_links['badge_md']) ?></code>
+                                    <button @click="copyLink(<?= htmlspecialchars(json_encode($generated_links['badge_md'])) ?>)" class="text-teal-500 hover:text-teal-400 p-2 shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 384 512"><path fill="currentColor" d="M280 64h40c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128c0-35.3 28.7-64 64-64h40c8.8 0 16-7.2 16-16V48C120 21.5 141.5 0 168 0h48c26.5 0 48 21.5 48 48v16c0 8.8 7.2 16 16 16zM168 48v16h48V48c0-8.8-7.2-16-16-16h-48c-8.8 0-16 7.2-16 16zM64 112v352h256V112H64z" /></svg>
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+                                    <span class="text-[9px] font-bold opacity-40 uppercase w-12">HTML</span>
+                                    <code class="text-[10px] flex-1 truncate opacity-70"><?= htmlspecialchars($generated_links['badge_html']) ?></code>
+                                    <button @click="copyLink(<?= htmlspecialchars(json_encode($generated_links['badge_html'])) ?>)" class="text-teal-500 hover:text-teal-400 p-2 shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 384 512"><path fill="currentColor" d="M280 64h40c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128c0-35.3 28.7-64 64-64h40c8.8 0 16-7.2 16-16V48C120 21.5 141.5 0 168 0h48c26.5 0 48 21.5 48 48v16c0 8.8 7.2 16 16 16zM168 48v16h48V48c0-8.8-7.2-16-16-16h-48c-8.8 0-16 7.2-16 16zM64 112v352h256V112H64z" /></svg>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                    <?php endforeach; ?>
+                    </div>
                 </div>
             <?php endif; ?>
         </main>
@@ -293,10 +327,10 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
         <section class="mt-20 mb-12">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">
-                    <?= $lang['how_it_works_title'] ?? 'How It Works' ?>
+                    <?= $lang['how_it_works_title'] ?>
                 </h2>
                 <p class="text-gray-500 dark:text-gray-400">
-                    <?= $lang['how_it_works_subtitle'] ?? 'Protect your email in 3 simple steps' ?>
+                    <?= $lang['how_it_works_subtitle'] ?>
                 </p>
             </div>
 
@@ -305,9 +339,9 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     <div class="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/20 shadow-lg shadow-blue-500/5 transition-transform hover:scale-110 duration-300">
                         <span class="text-2xl font-black text-blue-500">1</span>
                     </div>
-                    <h3 class="text-lg font-bold mb-2"><?= $lang['step1_title'] ?? 'Enter Email' ?></h3>
+                    <h3 class="text-lg font-bold mb-2"><?= $lang['step1_title'] ?></h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed px-4">
-                        <?= $lang['step1_desc'] ?? 'Type your email address in the form above' ?>
+                        <?= $lang['step1_desc'] ?>
                     </p>
                 </div>
 
@@ -315,9 +349,9 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     <div class="w-16 h-16 bg-teal-500/10 rounded-2xl flex items-center justify-center mb-6 border border-teal-500/20 shadow-lg shadow-teal-500/5 transition-transform hover:scale-110 duration-300">
                         <span class="text-2xl font-black text-teal-500">2</span>
                     </div>
-                    <h3 class="text-lg font-bold mb-2"><?= $lang['step2_title'] ?? 'Get Protected Link' ?></h3>
+                    <h3 class="text-lg font-bold mb-2"><?= $lang['step2_title'] ?></h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed px-4">
-                        <?= $lang['step2_desc'] ?? 'We generate a unique, protected link for you' ?>
+                        <?= $lang['step2_desc'] ?>
                     </p>
                 </div>
 
@@ -325,7 +359,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     <div class="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-6 border border-purple-500/20 shadow-lg shadow-purple-500/5 transition-transform hover:scale-110 duration-300">
                         <span class="text-2xl font-black text-purple-500">3</span>
                     </div>
-                    <h3 class="text-lg font-bold mb-2"><?= $lang['step3_title'] ?? 'Share Safely' ?></h3>
+                    <h3 class="text-lg font-bold mb-2"><?= $lang['step3_title'] ?></h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed px-4">
                         <?= $lang['step3_desc'] ?? 'Only humans can reveal your real email' ?>
                     </p>
@@ -353,7 +387,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                 <?= $lang['copy'] ?>
                 <a href="https://github.com/RonDevHub/MailShield"
                     target="_blank"
-                    class="relative group inline-block bg-clip-text font-semibold text-transparent bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 hover:scale-105">
+                    class="relative group inline-block bg-clip-text text-semibold text-transparent bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 hover:scale-105">
                     <span>RonDevHub</span>
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 group-hover:w-full"></span>
                     <span class="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 blur-xl transition-all duration-500 -z-10 rounded-full"></span>
