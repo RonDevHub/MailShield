@@ -43,6 +43,11 @@ $lang = (file_exists($lang_file)) ? require $lang_file : require "../lang/en.php
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 opacity-50 group-hover:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
                 </a>
 
+                <a href="https://github.com/sponsors/RonDevHub" target="_blank" class="flex items-center justify-between p-4 bg-teal-600/10 hover:bg-teal-600 hover:text-white border border-teal-600/20 rounded-2xl transition-all group">
+                    <span class="font-bold">Github Sponsors</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 opacity-50 group-hover:opacity-100" viewBox="0 0 640 640" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M442.9 144C415.6 144 389.9 157.1 373.9 179.2L339.5 226.8C335 233 327.8 236.7 320.1 236.7C312.4 236.7 305.2 233 300.7 226.8L266.3 179.2C250.3 157.1 224.6 144 197.3 144C150.3 144 112.2 182.1 112.2 229.1C112.2 279 144.2 327.5 180.3 371.4C221.4 421.4 271.7 465.4 306.2 491.7C309.4 494.1 314.1 495.9 320.2 495.9C326.3 495.9 331 494.1 334.2 491.7C368.7 465.4 419 421.3 460.1 371.4C496.3 327.5 528.2 279 528.2 229.1C528.2 182.1 490.1 144 443.1 144zM335 151.1C360 116.5 400.2 96 442.9 96C516.4 96 576 155.6 576 229.1C576 297.7 533.1 358 496.9 401.9C452.8 455.5 399.6 502 363.1 529.8C350.8 539.2 335.6 543.9 320 543.9C304.4 543.9 289.2 539.2 276.9 529.8C240.4 502 187.2 455.5 143.1 402C106.9 358.1 64 297.7 64 229.1C64 155.6 123.6 96 197.1 96C239.8 96 280 116.5 305 151.1L320 171.8L335 151.1z"/></svg>
+                </a>
+
                 <div x-data="{ copied: false }" class="p-4 bg-gray-100 dark:bg-gray-700/50 rounded-2xl border border-gray-200 dark:border-gray-600">
                     <div class="flex items-center justify-between mb-2">
                         <span class="text-xs font-bold uppercase tracking-widest opacity-50">Bitcoin (BTC)</span>
@@ -63,8 +68,17 @@ $lang = (file_exists($lang_file)) ? require $lang_file : require "../lang/en.php
             </div>
         </div>
         
-        <footer class="text-center mt-8 mb-8">
-            <p class="text-xs text-gray-500 dark:text-gray-400"><?= $lang['copy'] ?> <a href="https://github.com/RonDevHub/MailShield" class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400 font-semibold no-underline hover:underline decoration-teal-400" target="_blank">RonDevHub</a></p>
+        <footer class="mt-16 mb-8 text-center space-y-6">
+            <p class="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-500">
+                <?= $lang['copy'] ?>
+                <a href="https://github.com/RonDevHub/MailShield"
+                    target="_blank"
+                    class="relative group inline-block font-black text-gray-900 dark:text-gray-100 transition-all duration-300 hover:scale-105">
+                    <span>RonDevHub</span>
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 group-hover:w-full"></span>
+                    <span class="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 blur-xl transition-all duration-500 -z-10 rounded-full"></span>
+                </a>
+            </p>
         </footer>
     </div>
 
