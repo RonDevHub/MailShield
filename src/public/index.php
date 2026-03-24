@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
 
         $app_url = rtrim(getenv('APP_URL') ?: 'http://localhost', '/');
         $full_url = $app_url . '/' . $final_slug;
-        
+
         // Badge URLs
         $badge_url = $app_url . '/badge';
         $badge_md = '[![Protected by MailShield](' . $badge_url . ')](' . $full_url . ')';
@@ -307,24 +307,37 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                         <p class="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3 text-center"><?= $lang['badge_promo'] ?></p>
                         <div class="flex flex-col items-center gap-4">
                             <img src="/badge" alt="MailShield Badge" class="h-8">
-                            
+
                             <div class="w-full space-y-2">
                                 <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
                                     <span class="text-[9px] font-bold opacity-40 uppercase w-12">MD</span>
                                     <code class="text-[10px] flex-1 truncate opacity-70"><?= htmlspecialchars($generated_links['badge_md']) ?></code>
                                     <button @click="copyLink(<?= htmlspecialchars(json_encode($generated_links['badge_md'])) ?>)" class="text-teal-500 hover:text-teal-400 p-2 shrink-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 384 512"><path fill="currentColor" d="M280 64h40c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128c0-35.3 28.7-64 64-64h40c8.8 0 16-7.2 16-16V48C120 21.5 141.5 0 168 0h48c26.5 0 48 21.5 48 48v16c0 8.8 7.2 16 16 16zM168 48v16h48V48c0-8.8-7.2-16-16-16h-48c-8.8 0-16 7.2-16 16zM64 112v352h256V112H64z" /></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 384 512">
+                                            <path fill="currentColor" d="M280 64h40c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128c0-35.3 28.7-64 64-64h40c8.8 0 16-7.2 16-16V48C120 21.5 141.5 0 168 0h48c26.5 0 48 21.5 48 48v16c0 8.8 7.2 16 16 16zM168 48v16h48V48c0-8.8-7.2-16-16-16h-48c-8.8 0-16 7.2-16 16zM64 112v352h256V112H64z" />
+                                        </svg>
                                     </button>
                                 </div>
                                 <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
                                     <span class="text-[9px] font-bold opacity-40 uppercase w-12">HTML</span>
                                     <code class="text-[10px] flex-1 truncate opacity-70"><?= htmlspecialchars($generated_links['badge_html']) ?></code>
                                     <button @click="copyLink(<?= htmlspecialchars(json_encode($generated_links['badge_html'])) ?>)" class="text-teal-500 hover:text-teal-400 p-2 shrink-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 384 512"><path fill="currentColor" d="M280 64h40c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128c0-35.3 28.7-64 64-64h40c8.8 0 16-7.2 16-16V48C120 21.5 141.5 0 168 0h48c26.5 0 48 21.5 48 48v16c0 8.8 7.2 16 16 16zM168 48v16h48V48c0-8.8-7.2-16-16-16h-48c-8.8 0-16 7.2-16 16zM64 112v352h256V112H64z" /></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 384 512">
+                                            <path fill="currentColor" d="M280 64h40c35.3 0 64 28.7 64 64v320c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128c0-35.3 28.7-64 64-64h40c8.8 0 16-7.2 16-16V48C120 21.5 141.5 0 168 0h48c26.5 0 48 21.5 48 48v16c0 8.8 7.2 16 16 16zM168 48v16h48V48c0-8.8-7.2-16-16-16h-48c-8.8 0-16 7.2-16 16zM64 112v352h256V112H64z" />
+                                        </svg>
                                     </button>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    
+                    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
+                        <a href="/" class="text-sm font-medium opacity-50 hover:opacity-100 transition-all flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6" />
+                            </svg>
+                            <?= $lang['back'] ?>
+                        </a>
                     </div>
                 </div>
             <?php endif; ?>
@@ -367,7 +380,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     </div>
                     <h3 class="text-lg font-bold mb-2"><?= $lang['step3_title'] ?></h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed px-4">
-                        <?= $lang['step3_desc'] ?? 'Only humans can reveal your real email' ?>
+                        <?= $lang['step3_desc'] ?>
                     </p>
                 </div>
             </div>
