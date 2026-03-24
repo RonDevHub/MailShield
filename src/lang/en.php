@@ -54,5 +54,6 @@ return [
     'step2_desc' => 'We generate a unique, protected link for you',
     'step3_title' => 'Share Safely',
     'step3_desc' => 'Only humans can reveal your real email',
+    'badge_promo' => 'Promote your protection',
     'copy' => 'Created with ❤️ and ☕️ by'
 ];
