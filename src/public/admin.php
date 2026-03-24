@@ -15,7 +15,7 @@ if (isset($_POST['login'])) {
     if ($_POST['user'] === $admin_user && $_POST['pass'] === $admin_pass) {
         $_SESSION['admin_logged_in'] = true;
     } else {
-        $error = $lang['incorrect_login'] ?? 'Login fehlgeschlagen';
+        $error = $lang['incorrect_login'] ?? 'Login error';
     }
 }
 
@@ -25,7 +25,7 @@ if (isset($_GET['logout'])) {
     exit;
 }
 
-// --- ADMIN AKTIONEN ---
+// --- ADMIN ACTIONS ---
 if (isset($_SESSION['admin_logged_in'])) {
 
     // 1. UNIVERSAL JSON EXPORT (Für Migration)
@@ -75,7 +75,7 @@ if (isset($_SESSION['admin_logged_in'])) {
         }
     }
 
-    // 3. SQLITE FILE EXPORT (Nur wenn SQLite aktiv)
+    // 3. SQLITE FILE EXPORT (Only if SQLite is enabled)
     if (isset($_POST['export_db']) && $driver === 'sqlite') {
         if (file_exists($db_path)) {
             header('Content-Type: application/x-sqlite3');
@@ -85,7 +85,7 @@ if (isset($_SESSION['admin_logged_in'])) {
         }
     }
 
-    // 4. DATENBANK LEEREN
+    // 4. CLEAR DATABASE
     if (isset($_POST['reset_db'])) {
         $db->exec("DELETE FROM shields; DELETE FROM rate_limits;");
         $success = $lang['database_cleared'] ?? 'Datenbank wurde geleert.';
