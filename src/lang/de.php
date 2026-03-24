@@ -54,5 +54,6 @@ return [
     'step2_desc' => 'Wir erstellen einen eindeutigen, geschützten Link für dich',
     'step3_title' => 'Sicher teilen',
     'step3_desc' => 'Nur Menschen können deine echte E-Mail-Adresse herausfinden.',
+    'badge_promo' => 'Mach deinen Schutz bekannt',
     'copy' => 'Erstellt mit ❤️ und ☕️ von'
 ];

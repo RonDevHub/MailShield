@@ -1,6 +1,7 @@
 <h1 align="center">
   <img src="https://mail-shield.net/img/icon.png" height="50"><br>
-  MailShield
+  MailShield<br>
+  ![Badge](https://mail-shield.net/badge)
 </h1>
 
 <p align="center">
@@ -28,6 +29,7 @@ MailShield is a minimalist, resource-efficient PHP application designed to hide 
 - **Lightweight:** Optimized for small home labs (minimal RAM usage).
 - **Modern UI:** Built with Tailwind CSS, including Dark Mode support.
 - **Multilingual:** Automatically detects German and English.
+- **Badge:** Use a badge to promote your protection
 
 ## Database Support
 
