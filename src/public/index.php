@@ -406,16 +406,16 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                 <?= $lang['copy'] ?>
                 <a href="https://rondev.de"
                     target="_blank"
-                    class="relative group inline-block bg-clip-text text-semibold text-transparent bg-gradient-to-r from-indego-500 to-purple-400 transition-all duration-300 hover:scale-105">
+                    class="relative group inline-block bg-clip-text text-bold text-transparent bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 hover:scale-105">
                     <span>RonDev</span>
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-indego-500 to-purple-400 transition-all duration-300 group-hover:w-full"></span>
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 group-hover:w-full"></span>
                     <span class="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 blur-xl transition-all duration-500 -z-10 rounded-full"></span>
                 </a> - 
                 <a href="https://github.com/RonDevHub/MailShield"
                     target="_blank"
-                    class="relative group inline-block bg-clip-text text-semibold text-transparent bg-gradient-to-r from-lime-500 to-teal-400 transition-all duration-300 hover:scale-105">
+                    class="relative group inline-block bg-clip-text text-bold text-transparent bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 hover:scale-105">
                     <span>Github</span>
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-lime-500 to-teal-400 transition-all duration-300 group-hover:w-full"></span>
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 group-hover:w-full"></span>
                     <span class="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 blur-xl transition-all duration-500 -z-10 rounded-full"></span>
                 </a>
             </p>
