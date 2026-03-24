@@ -330,7 +330,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
                         <a href="/" class="text-sm font-medium opacity-50 hover:opacity-100 transition-all flex items-center justify-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -404,10 +404,17 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
 
             <p class="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-500">
                 <?= $lang['copy'] ?>
+                <a href="https://rondev.de"
+                    target="_blank"
+                    class="relative group inline-block bg-clip-text text-semibold text-transparent bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 hover:scale-105">
+                    <span>RonDev</span>
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 group-hover:w-full"></span>
+                    <span class="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 blur-xl transition-all duration-500 -z-10 rounded-full"></span>
+                </a> - 
                 <a href="https://github.com/RonDevHub/MailShield"
                     target="_blank"
                     class="relative group inline-block bg-clip-text text-semibold text-transparent bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 hover:scale-105">
-                    <span>RonDevHub</span>
+                    <span>Github</span>
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 group-hover:w-full"></span>
                     <span class="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 blur-xl transition-all duration-500 -z-10 rounded-full"></span>
                 </a>
