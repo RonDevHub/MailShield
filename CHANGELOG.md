@@ -7,4 +7,4 @@
 ### Added
 - SQLite (default, zero config), PostgreSQL (recommended for production) Switch via environment variables.
 - Easily switch from an SQLite database to PostgreSQL (migration can now be performed using JSON)
-
+- French and Italian languages added
