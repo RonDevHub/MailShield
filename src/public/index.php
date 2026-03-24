@@ -170,8 +170,8 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
             </h1>
             <p class="text-gray-500 dark:text-gray-400"><?= $lang['subtitle'] ?></p>
 
-            <p class="mt-3 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center gap-4">
-                <span class="flex items-center gap-1">
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[10px] uppercase tracking-widest font-bold text-gray-400 dark:text-gray-500">
+                <span class="flex items-center gap-2 px-3 py-1.5 bg-gray-100/50 dark:bg-gray-800/40 rounded-full border border-gray-200/20 dark:border-gray-700/20 transition-colors hover:text-blue-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 384 512">
                         <defs>
                             <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -183,7 +183,8 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     </svg>
                     <?= $lang['no_tracking'] ?>
                 </span>
-                <span class="flex items-center gap-1">
+
+                <span class="flex items-center gap-2 px-3 py-1.5 bg-gray-100/50 dark:bg-gray-800/40 rounded-full border border-gray-200/20 dark:border-gray-700/20 transition-colors hover:text-blue-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 576 512">
                         <defs>
                             <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -195,7 +196,8 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     </svg>
                     <?= $lang['no_ads'] ?>
                 </span>
-                <span class="flex items-center gap-1">
+
+                <span class="flex items-center gap-2 px-3 py-1.5 bg-gray-100/50 dark:bg-gray-800/40 rounded-full border border-gray-200/20 dark:border-gray-700/20 transition-colors hover:text-blue-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 576 512">
                         <defs>
                             <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -207,7 +209,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     </svg>
                     <?= $lang['free'] ?>
                 </span>
-            </p>
+            </div>
 
             <div class="mt-8 flex justify-center gap-12">
                 <div class="text-center">
@@ -288,6 +290,49 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
             <?php endif; ?>
         </main>
 
+        <section class="mt-20 mb-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">
+                    <?= $lang['how_it_works_title'] ?? 'How It Works' ?>
+                </h2>
+                <p class="text-gray-500 dark:text-gray-400">
+                    <?= $lang['how_it_works_subtitle'] ?? 'Protect your email in 3 simple steps' ?>
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/20 shadow-lg shadow-blue-500/5 transition-transform hover:scale-110 duration-300">
+                        <span class="text-2xl font-black text-blue-500">1</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2"><?= $lang['step1_title'] ?? 'Enter Email' ?></h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed px-4">
+                        <?= $lang['step1_desc'] ?? 'Type your email address in the form above' ?>
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-teal-500/10 rounded-2xl flex items-center justify-center mb-6 border border-teal-500/20 shadow-lg shadow-teal-500/5 transition-transform hover:scale-110 duration-300">
+                        <span class="text-2xl font-black text-teal-500">2</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2"><?= $lang['step2_title'] ?? 'Get Protected Link' ?></h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed px-4">
+                        <?= $lang['step2_desc'] ?? 'We generate a unique, protected link for you' ?>
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-6 border border-purple-500/20 shadow-lg shadow-purple-500/5 transition-transform hover:scale-110 duration-300">
+                        <span class="text-2xl font-black text-purple-500">3</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2"><?= $lang['step3_title'] ?? 'Share Safely' ?></h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed px-4">
+                        <?= $lang['step3_desc'] ?? 'Only humans can reveal your real email' ?>
+                    </p>
+                </div>
+            </div>
+        </section>
+
         <footer class="mt-16 mb-8 text-center space-y-6">
             <a href="/support" class="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] uppercase opacity-30 hover:opacity-100 transition-all duration-300 group">
                 <span class="p-1.5 rounded-lg bg-gray-200 dark:bg-gray-800 group-hover:bg-red-500/10 group-hover:text-red-500 transition-colors shadow-sm">
@@ -308,7 +353,7 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                 <?= $lang['copy'] ?>
                 <a href="https://github.com/RonDevHub/MailShield"
                     target="_blank"
-                    class="relative group inline-block font-black text-gray-900 dark:text-gray-100 transition-all duration-300 hover:scale-105">
+                    class="relative group inline-block bg-clip-text text-semibold text-transparent bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 hover:scale-105">
                     <span>RonDevHub</span>
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400 transition-all duration-300 group-hover:w-full"></span>
                     <span class="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 blur-xl transition-all duration-500 -z-10 rounded-full"></span>
@@ -354,4 +399,5 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
         })
     </script>
 </body>
+
 </html>
