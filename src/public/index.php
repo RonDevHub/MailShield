@@ -212,8 +212,14 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
             <?php elseif ($is_view_page): ?>
                 <form method="POST" class="text-center">
                     <h2 class="text-xl mb-4"><?= $lang['view_desc'] ?></h2>
-                    <div class="cf-turnstile flex justify-center mb-6" data-sitekey="<?= getenv('CF_SITE_KEY') ?>"></div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
+                    <div class="cf-turnstile flex justify-center mb-6"
+                        data-sitekey="<?= getenv('CF_SITE_KEY') ?>"
+                        data-callback="onCaptchaVerified"
+                        :data-theme="darkMode ? 'dark' : 'light'"></div>
+                    <button type="submit"
+                        :disabled="!captchaVerified"
+                        :class="!captchaVerified ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'"
+                        class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
                         <?= $lang['btn_view'] ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 576 512">
                             <path fill="currentColor" d="M288 64c-140.8 0-229.3 128-256 192 26.7 64 115.2 192 256 192 140.8 0 229.3-128 256-192-26.7-64-115.2-192-256-192zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1 3.3 7.9 3.3 16.7 0 24.6-14.9 35.7-46.2 87.7-93 131.1-47.1 43.7-111.8 80.6-192.6 80.6S142.5 443.2 95.4 399.4c-46.8-43.5-78.1-95.4-93-131.1-3.3-7.9-3.3-16.7 0-24.6 14.9-35.7-46.2-87.7 93-131.1zM288 352c53 0 96-43 96-96 0-43.3-28.7-79.9-68.1-91.9 2.7 8.8 4.1 18.2 4.1 27.9 0 53-43 96-96 96-9.7 0-19.1-1.4-27.9-4.1 11.9 39.4 48.6 68.1 91.9 68.1zM160.2 263.8c-.2-2.6-.2-5.2-.2-7.8 0-12.2 1.7-23.9 4.9-35 .3-.9 .5-1.8 .8-2.7 12.4-40.4 44.3-72.2 84.7-84.7 11.9-3.7 24.6-5.6 37.7-5.6 2.5 0 5 .1 7.4 .2l.4 0c67.1 4 120.2 59.7 120.2 127.8 0 70.7-57.3 128-128 128-68.1 0-123.8-53.2-127.8-120.2zm32.1-16.1c9.3 5.3 20.1 8.4 31.6 8.4 35.3 0 64-28.7 64-64 0-11.5-3-22.3-8.4-31.6-46.4 4-83.3 40.9-87.3 87.3z" />
@@ -225,8 +231,14 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     <input type="text" name="honeypot" class="hidden">
                     <input type="email" name="email" required placeholder="<?= $lang['input_placeholder'] ?>"
                         class="w-full px-6 py-4 bg-gray-100 dark:bg-gray-700 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                    <div class="cf-turnstile flex justify-center" data-sitekey="<?= getenv('CF_SITE_KEY') ?>"></div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
+                    <div class="cf-turnstile flex justify-center"
+                        data-sitekey="<?= getenv('CF_SITE_KEY') ?>"
+                        data-callback="onCaptchaVerified"
+                        :data-theme="darkMode ? 'dark' : 'light'"></div>
+                    <button type="submit"
+                        :disabled="!captchaVerified"
+                        :class="!captchaVerified ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'"
+                        class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
                         <?= $lang['btn_generate'] ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 512 512">
                             <path fill="currentColor" d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
@@ -255,13 +267,6 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
             <?php endif; ?>
         </main>
 
-        <!-- Bitte diesen kleinen Footer-Link nicht entfernen.  
-             Er ist ein fairer Hinweis auf den ursprünglichen Autor und beeinträchtigt das Design nicht.
-             Das Entfernen wäre unfair gegenüber der geleisteten Arbeit.
-             Please do not remove this small footer link.
-             It is a fair reference to the original author and does not affect the design.
-             Removing it would be unfair to the work that was done.
-        -->
         <footer class="mt-16 mb-8 text-center space-y-6">
             <a href="/support" class="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] uppercase opacity-30 hover:opacity-100 transition-all duration-300 group">
                 <span class="p-1.5 rounded-lg bg-gray-200 dark:bg-gray-800 group-hover:bg-red-500/10 group-hover:text-red-500 transition-colors shadow-sm">
@@ -293,23 +298,35 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
 
     <div x-show="toast" x-cloak x-transition class="fixed top-10 left-1/2 -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-full shadow-xl font-bold z-[100]" x-text="toastMsg"></div>
 
-    <!-- <button @click="darkMode = !darkMode; localStorage.setItem('theme', darkMode ? 'dark' : 'light')"
+    <button @click="darkMode = !darkMode; localStorage.setItem('theme', darkMode ? 'dark' : 'light')"
         class="fixed bottom-8 right-8 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 hover:scale-110 transition-transform z-50">
         <span x-show="!darkMode"><svg xmlns="http://www.w3.org/2000/svg" height="1.2em" viewBox="0 0 512 512">
                 <path fill="currentColor" d="M256 32c9.5 0 18.9 .6 28 1.7-60.1 38.3-100 105.6-100 182.3 0 117.2 96.4 212.8 210.7 215.9-38.2 30.1-86.3 48.1-138.7 48.1-123.7 0-224-100.3-224-224S132.3 32 256 32zm0-32C114.6 0 0 114.6 0 256S114.6 512 256 512c68.8 0 131.3-27.2 177.3-71.4 7.3-7 9.4-17.9 5.3-27.1s-13.7-14.9-23.8-14.1c-105.4 8.4-198.8-77.3-198.8-183.4 0-72.1 41.5-134.6 102.1-164.8 9.1-4.5 14.3-14.3 13.1-24.4S322.6 8.5 312.7 6.3C294.4 2.2 275.4 0 256 0z" />
             </svg></span><span x-show="darkMode"><svg xmlns="http://www.w3.org/2000/svg" height="1.2em" viewBox="0 0 512 512">
                 <path fill="currentColor" d="M240 104c0 8.8 7.2 16 16 16s16-7.2 16-16l0-88c0-8.8-7.2-16-16-16s-16 7.2-16 16l0 88zm16 88a64 64 0 1 1 0 128 64 64 0 1 1 0-128zm0 160a96 96 0 1 0 0-192 96 96 0 1 0 0 192zm0 160c8.8 0 16-7.2 16-16l0-80c0-8.8-7.2-16-16-16s-16 7.2-16 16l0 80c0 8.8 7.2 16 16 16zM0 256c0 8.8 7.2 16 16 16l80 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-80 0c-8.8 0-16 7.2-16 16zm408-16c-8.8 0-16 7.2-16 16s7.2 16 16 16l88 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-88 0zM75 437c6.2 6.2 16.4 6.2 22.6 0l56.6-56.6c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0L75 414.4c-6.2 6.2-6.2 16.4 0 22.6zM352.2 137.2c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0L437 97.6c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0l-62.2 62.2zM75 75c-6.2 6.2-6.2 16.4 0 22.6l56.6 56.6c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L97.6 75c-6.2-6.2-16.4-6.2-22.6 0zM374.8 352.2c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L414.4 437c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-62.2-62.2z" />
             </svg></span>
-    </button> -->
+    </button>
 
     <script>
+        // Globaler Callback für Turnstile (außerhalb von Alpine)
+        function onCaptchaVerified(token) {
+            window.dispatchEvent(new CustomEvent('captcha-success', {
+                detail: token
+            }));
+        }
+
         document.addEventListener('alpine:init', () => {
             Alpine.data('app', () => ({
                 darkMode: localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
                 toast: false,
                 toastMsg: '',
+                captchaVerified: false,
                 init() {
                     this.$watch('darkMode', val => document.documentElement.classList.toggle('dark', val));
+                    // Event Listener für erfolgreiches Captcha
+                    window.addEventListener('captcha-success', () => {
+                        this.captchaVerified = true;
+                    });
                 },
                 copyLink(text) {
                     if (!navigator.clipboard) return;
