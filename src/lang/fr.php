@@ -46,5 +46,13 @@ return [
     'kofi' => 'ko-fi.com',
     'bmac' => 'Buy me a Coffee',
     'crypto' => 'Espace Crypto',
+    'how_it_works_title' => 'Comment ça marche',
+    'how_it_works_subtitle' => 'Protégez votre e-mail en 3 étapes simples',
+    'step1_title' => 'Saisir l’e-mail',
+    'step1_desc' => 'Entrez votre adresse e-mail dans le formulaire ci-dessus',
+    'step2_title' => 'Obtenir le lien protégé',
+    'step2_desc' => 'Nous générons un lien unique et protégé pour vous',
+    'step3_title' => 'Partager en toute sécurité',
+    'step3_desc' => 'Seuls les humains peuvent révéler votre véritable e-mail',
     'copy' => 'Créé avec ❤️ et ☕️ par'
 ];
