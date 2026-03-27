@@ -1,6 +1,6 @@
 <h1 align="center">
   <img src="https://mail-shield.net/img/icon.png" height="50"><br>
-  MailShield<br><img src="https://mail-shield.net/badge">
+  MailShield<br>
 </h1>
 
 <p align="center">
