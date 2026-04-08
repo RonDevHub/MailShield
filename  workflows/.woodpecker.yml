@@ -1,5 +1,5 @@
 steps:
-  # 1. Main-Branch -> :latest (Automatisch) 
+  # 1. Main-Branch -> :latest (Automatisch)
   publish-latest:
     image: woodpeckerci/plugin-kaniko
     settings:
