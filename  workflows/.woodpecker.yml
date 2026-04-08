@@ -13,7 +13,7 @@ steps:
       dockerfile: Dockerfile
       context: .
     when:
-      event: manual
+      event: push
       branch: main
 
   # 2. Beta-Branch -> :beta (Nur manuell im UI starten!)
