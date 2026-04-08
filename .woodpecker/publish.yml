@@ -1,13 +1,10 @@
-kind: pipeline
-name: mailshield-build
-
 steps:
   # 1. Main-Branch -> :latest
-  - name: publish-latest
+  publish-latest:
     image: woodpeckerci/plugin-kaniko
     settings:
       registry: ghcr.io
-      repo: rondevhub/mailshield # Kleingeschrieben!
+      repo: rondevhub/mailshield
       username:
         from_secret: ghcr_user
       password:
@@ -19,8 +16,8 @@ steps:
       branch: main
       event: push
 
-  # 2. Beta-Branch -> :beta (Wird bei jedem Push auf Beta gebaut)
-  - name: publish-beta
+  # 2. Beta-Branch -> :beta
+  publish-beta:
     image: woodpeckerci/plugin-kaniko
     settings:
       registry: ghcr.io
@@ -34,10 +31,10 @@ steps:
       context: .
     when:
       branch: beta
-      event: [push, manual] # Manual allein ist oft zickig
+      event: [push, manual]
 
   # 3. Release-Tags -> :v1.0.0
-  - name: publish-tag
+  publish-tag:
     image: woodpeckerci/plugin-kaniko
     settings:
       registry: ghcr.io
