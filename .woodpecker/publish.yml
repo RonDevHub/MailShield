@@ -1,10 +1,10 @@
 steps:
-  # 1. Main-Branch -> :latest (Automatisch)
+  # 1. Main-Branch -> :latest
   publish-latest:
     image: woodpeckerci/plugin-kaniko
     settings:
       registry: ghcr.io
-      repo: rondevhub/MailShield
+      repo: rondevhub/mailshield
       username:
         from_secret: ghcr_user
       password:
@@ -13,15 +13,15 @@ steps:
       dockerfile: Dockerfile
       context: .
     when:
-      event: push
       branch: main
+      event: push
 
-  # 2. Beta-Branch -> :beta (Nur manuell im UI starten!)
+  # 2. Beta-Branch -> :beta
   publish-beta:
     image: woodpeckerci/plugin-kaniko
     settings:
       registry: ghcr.io
-      repo: rondevhub/MailShield
+      repo: rondevhub/mailshield
       username:
         from_secret: ghcr_user
       password:
@@ -30,15 +30,15 @@ steps:
       dockerfile: Dockerfile
       context: .
     when:
-      event: manual
       branch: beta
+      event: manual
 
-  # 3. Release-Tags -> :v1.0.0 etc. (Automatisch)
+  # 3. Release-Tags -> :v1.0.0
   publish-tag:
     image: woodpeckerci/plugin-kaniko
     settings:
       registry: ghcr.io
-      repo: rondevhub/MailShield
+      repo: rondevhub/mailshield
       username:
         from_secret: ghcr_user
       password:
