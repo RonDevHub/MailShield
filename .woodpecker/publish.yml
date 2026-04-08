@@ -31,7 +31,7 @@ steps:
       context: .
     when:
       branch: beta
-      event: [push, manual]
+      event: manual
 
   # 3. Release-Tags -> :v1.0.0
   publish-tag:
