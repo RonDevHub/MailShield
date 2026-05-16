@@ -11,11 +11,10 @@
 
 ![Created](https://mini-badges.rondevhub.de/forgejo/RonDevHub/MailShield/created-at/*/*/en) ![GitHub Repo stars](https://mini-badges.rondevhub.de/forgejo/RonDevHub/MailShield/lastcommit/*/*/en) ![GitHub Repo stars](https://mini-badges.rondevhub.de/github/RonDevHub/MailShield/stars/*/*/en) ![GitHub Repo stars](https://mini-badges.rondevhub.de/github/RonDevHub/MailShield/issues/*/*/en) ![GitHub Repo language](https://mini-badges.rondevhub.de/forgejo/RonDevHub/MailShield/language/*/*/en) ![GitHub Repo license](https://mini-badges.rondevhub.de/github/RonDevHub/MailShield/license/*/*/en) ![GitHub Repo release](https://mini-badges.rondevhub.de/github/RonDevHub/MailShield/release/*/*/en) ![GitHub Repo release](https://mini-badges.rondevhub.de/github/RonDevHub/MailShield/forks/*/*/en) ![GitHub Repo downlods](https://mini-badges.rondevhub.de/github/RonDevHub/MailShield/downloads/*/*/en) ![GitHub Repo stars](https://mini-badges.rondevhub.de/github/RonDevHub/MailShield/watchers) [![status-badge](https://ci.commitcloud.net/api/badges/4/status.svg)](https://ci.commitcloud.net/repos/4) 
 
-[![Buy me a coffee](https://mini-badges.rondevhub.de/icon/cuptogo/Buy_me_a_Coffee-c1d82f-222/social "Buy me a coffee")](https://www.buymeacoffee.com/RonDev)
-[![Buy me a coffee](https://mini-badges.rondevhub.de/icon/cuptogo/ko--fi.com-c1d82f-222/social "Buy me a coffee")](https://ko-fi.com/U6U31EV2VS)
-[![Sponsor me](https://mini-badges.rondevhub.de/icon/hearts-red/Sponsor_me/social "Sponsor me")](https://github.com/sponsors/RonDevHub)
-[![Pizza Power](https://mini-badges.rondevhub.de/icon/pizzaslice/Buy_me_a_pizza/social "Pizza Power")](https://www.paypal.com/paypalme/Depressionist1/4,99)
-[![Bitcoin Power](https://mini-badges.rondevhub.de/icon/bitcoin/Bitcoin-ff7b00/social/-666666 "Bitcoin Power")](https://btc-sharer.s3cr.net/v/Vv7pQfYHW3HDqOkKujhGo8DOokNoA9FD_v3pyzFLMHZKR1gyTFJRQ1A5RWZmM09hTjI5SFZsY2ZlQThGWVZPazBnbHczaTJ6UzVWZVVGcnYwMWEr)
+[![Buy me a coffee](https://mini-badges.rondevhub.de/icon/cuptogo/Buy_me_a_Coffee-c1d82f-222/for-the-badge "Buy me a coffee")](https://www.buymeacoffee.com/RonDev)
+[![Buy me a coffee](https://mini-badges.rondevhub.de/icon/cuptogo/ko--fi.com-c1d82f-222/for-the-badge "Buy me a coffee")](https://ko-fi.com/U6U31EV2VS)
+[![Pizza Power](https://mini-badges.rondevhub.de/icon/paypal/PayPal/for-the-badge "Pizza Power")](https://www.paypal.com/donate/?hosted_button_id=PWY939TPCQ3RA)
+[![Bitcoin Power](https://mini-badges.rondevhub.de/icon/bitcoin/Bitcoin-ff7b00/for-the-badge/-666666 "Bitcoin Power")](https://btc-sharer.s3cr.net/v/Vv7pQfYHW3HDqOkKujhGo8DOokNoA9FD_v3pyzFLMHZKR1gyTFJRQ1A5RWZmM09hTjI5SFZsY2ZlQThGWVZPazBnbHczaTJ6UzVWZVVGcnYwMWEr)
 </div>
 <hr>
 

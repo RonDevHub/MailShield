@@ -28,7 +28,7 @@ $lang = (file_exists($lang_file)) ? require $lang_file : require "../lang/en.php
             <p class="text-gray-500 dark:text-gray-400 mb-8"><?= $lang['support_subtitle'] ?></p>
 
             <div class="grid gap-4">
-                <a href="https://paypal.me/Depressionist1/4,99" target="_blank" class="flex items-center justify-between p-4 bg-blue-600/10 hover:bg-blue-600 hover:text-white border border-blue-600/20 rounded-2xl transition-all group">
+                <a href="https://www.paypal.com/donate/?hosted_button_id=PWY939TPCQ3RA" target="_blank" class="flex items-center justify-between p-4 bg-blue-600/10 hover:bg-blue-600 hover:text-white border border-blue-600/20 rounded-2xl transition-all group">
                     <span class="font-bold"><?= $lang['paypal'] ?></span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 opacity-50 group-hover:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 </a>
