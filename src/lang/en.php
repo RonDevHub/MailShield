@@ -21,6 +21,7 @@ return [
     'invalid_email' => 'Oops, that\'s not a valid email!',
     'rate_limit' => 'Slow down! Too many requests.',
     'captcha_fail' => 'Are you a robot? Captcha says yes.',
+    'captcha_config_error' => 'Configuration error: enable exactly one CAPTCHA provider and set all required values in the .env file.',
     'admin_title' => 'Admin Area',
     'admin_login' => 'Admin Login 🛡️',
     'admin_dashboard' => 'Dashboard',

@@ -21,6 +21,7 @@ return [
     'invalid_email' => 'Hoppla, das ist keine gültige E-Mail!',
     'rate_limit' => 'Sachte! Du hast zu viele Anfragen gestellt.',
     'captcha_fail' => 'Bist du ein Roboter? Das Captcha sagt ja.',
+    'captcha_config_error' => 'Konfigurationsfehler: Bitte genau einen CAPTCHA-Anbieter aktivieren und alle erforderlichen Werte in der .env angeben.',
     'admin_title' => 'Admin Bereich',
     'admin_login' => 'Admin Login 🛡️',
     'admin_dashboard' => 'Dashboard',
