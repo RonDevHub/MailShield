@@ -5,17 +5,103 @@ require_once '../core/Crypto.php';
 require_once '../core/Database.php';
 require_once '../core/RateLimiter.php';
 
+function verifyCaptchaToken($provider, $token, $secret, $verificationUrl, $userIp)
+{
+    if ($token === '') {
+        return false;
+    }
+
+    if ($provider === 'turnstile') {
+        $body = http_build_query([
+            'secret' => $secret,
+            'response' => $token,
+            'remoteip' => $userIp
+        ]);
+        $headers = "Content-Type: application/x-www-form-urlencoded\r\n";
+    } else {
+        $body = json_encode([
+            'secret' => $secret,
+            'response' => $token
+        ]);
+        $headers = "Content-Type: application/json\r\n";
+    }
+
+    $context = stream_context_create([
+        'http' => [
+            'method' => 'POST',
+            'header' => $headers,
+            'content' => $body,
+            'timeout' => 5,
+            'ignore_errors' => true
+        ]
+    ]);
+    $response = @file_get_contents($verificationUrl, false, $context);
+
+    if ($response === false) {
+        $last_error = error_get_last();
+        error_log('Captcha verification request failed: ' . ($last_error['message'] ?? 'unknown error'));
+        return false;
+    }
+
+    $result = json_decode($response, true);
+    if (!is_array($result)) {
+        error_log('Captcha verification returned an invalid response.');
+        return false;
+    }
+
+    return ($result['success'] ?? false) === true;
+}
+
 $db_instance = new Database(); // Retrieves everything from ENV
 $db = $db_instance->getDB();
 $limiter = new RateLimiter($db);
 $app_key = getenv('APP_KEY');
 $admin_enabled = filter_var(getenv('ADMIN_SITE') ?: 'true', FILTER_VALIDATE_BOOLEAN);
+$lang_code = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'de', 0, 2);
+$lang = (file_exists("../lang/$lang_code.php")) ? require "../lang/$lang_code.php" : require "../lang/en.php";
+$turnstile_enabled = filter_var(getenv('CF_ENABLED') === false ? 'true' : getenv('CF_ENABLED'), FILTER_VALIDATE_BOOLEAN);
+$cap_enabled = filter_var(getenv('CAP_ENABLED') === false ? 'false' : getenv('CAP_ENABLED'), FILTER_VALIDATE_BOOLEAN);
+$captcha_provider = $turnstile_enabled ? 'turnstile' : ($cap_enabled ? 'cap' : null);
+$captcha_site_key = '';
+$captcha_secret_key = '';
+$captcha_script = null;
+$captcha_endpoint = null;
+$captcha_config_error = null;
+
+if ($turnstile_enabled && $cap_enabled) {
+    $captcha_config_error = $lang['captcha_config_error'] ?? 'Captcha configuration error: enable only one CAPTCHA provider.';
+} elseif ($turnstile_enabled) {
+    $captcha_site_key = getenv('CF_SITE_KEY') ?: '';
+    $captcha_secret_key = getenv('CF_SECRET_KEY') ?: '';
+    if ($captcha_site_key === '' || $captcha_secret_key === '') {
+        $captcha_config_error = $lang['captcha_config_error'] ?? 'Captcha configuration error: required CAPTCHA settings are missing.';
+    } else {
+        $captcha_script = 'turnstile';
+    }
+} elseif ($cap_enabled) {
+    $cap_url = rtrim(getenv('CAP_URL') ?: '', '/');
+    $cap_site_key = getenv('CAP_SITE_KEY') ?: '';
+    $captcha_secret_key = getenv('CAP_SECRET_KEY') ?: '';
+    $cap_url_parts = parse_url($cap_url);
+
+    if (
+        $cap_url === '' ||
+        !is_array($cap_url_parts) ||
+        !isset($cap_url_parts['scheme'], $cap_url_parts['host']) ||
+        !in_array(strtolower($cap_url_parts['scheme']), ['http', 'https'], true) ||
+        $cap_site_key === '' ||
+        $captcha_secret_key === ''
+    ) {
+        $captcha_config_error = $lang['captcha_config_error'] ?? 'Captcha configuration error: required CAPTCHA settings are missing or invalid.';
+    } else {
+        $captcha_site_key = $cap_site_key;
+        $captcha_endpoint = $cap_url . '/' . rawurlencode($cap_site_key) . '/';
+        $captcha_script = 'cap';
+    }
+}
 
 $user_ip = $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $_SERVER['REMOTE_ADDR'];
 $ip_hash = hash('sha256', $user_ip);
-
-$lang_code = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'de', 0, 2);
-$lang = (file_exists("../lang/$lang_code.php")) ? require "../lang/$lang_code.php" : require "../lang/en.php";
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $slug = ltrim($uri, '/');
@@ -45,14 +131,30 @@ if ($slug === 'badge') {
 
 $message = '';
 $generated_links = null;
+$captcha_valid = $captcha_provider === null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $captcha_config_error === null && $captcha_provider !== null) {
+    $captcha_token = $captcha_provider === 'turnstile'
+        ? ($_POST['cf-turnstile-response'] ?? '')
+        : ($_POST['cap-token'] ?? '');
+    $verification_url = $captcha_provider === 'turnstile'
+        ? 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
+        : $captcha_endpoint . 'siteverify';
+    $captcha_valid = is_string($captcha_token) &&
+        verifyCaptchaToken($captcha_provider, $captcha_token, $captcha_secret_key, $verification_url, $user_ip);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
-    if (!$limiter->check($ip_hash)) {
+    if ($captcha_config_error !== null) {
+        $message = $captcha_config_error;
+    } elseif (!$limiter->check($ip_hash)) {
         $message = $lang['rate_limit'];
     } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) || strlen($_POST['email']) > 255) {
         $message = $lang['invalid_email'];
     } elseif (!empty($_POST['honeypot'])) {
         $message = "Nice try, Bot!";
+    } elseif (!$captcha_valid) {
+        $message = $lang['captcha_fail'];
     } else {
         $email = $_POST['email'];
         $email_hash = Crypto::hash($email);
@@ -97,8 +199,12 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
     $stmt = $db->prepare("SELECT encrypted_email FROM shields WHERE slug = ?");
     $stmt->execute([$slug]);
     $entry = $stmt->fetch();
-    if ($entry && isset($_POST['cf-turnstile-response'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $captcha_config_error !== null) {
+        $message = $captcha_config_error;
+    } elseif ($entry && $_SERVER['REQUEST_METHOD'] === 'POST' && $captcha_valid) {
         $decrypted_email = Crypto::decrypt($entry['encrypted_email'], $app_key);
+    } elseif ($entry && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $message = $lang['captcha_fail'];
     }
 }
 ?>
@@ -135,7 +241,11 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
         }
     </script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <?php if ($captcha_script === 'turnstile'): ?>
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <?php elseif ($captcha_script === 'cap'): ?>
+        <script src="https://cdn.jsdelivr.net/npm/@cap.js/widget@0.1.63" async defer></script>
+    <?php endif; ?>
     <style>
         [x-cloak] {
             display: none !important;
@@ -249,12 +359,17 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
             <?php elseif ($is_view_page): ?>
                 <form method="POST" class="text-center">
                     <h2 class="text-xl mb-4"><?= $lang['view_desc'] ?></h2>
-                    <div class="cf-turnstile flex justify-center mb-6"
-                        data-sitekey="<?= getenv('CF_SITE_KEY') ?>"
-                        data-callback="onCaptchaVerified"
-                        :data-theme="darkMode ? 'dark' : 'light'"></div>
+                    <?php if ($captcha_script === 'turnstile'): ?>
+                        <div class="cf-turnstile flex justify-center mb-6"
+                            data-sitekey="<?= htmlspecialchars($captcha_site_key, ENT_QUOTES, 'UTF-8') ?>"
+                            data-callback="onCaptchaVerified"
+                            :data-theme="darkMode ? 'dark' : 'light'"></div>
+                    <?php elseif ($captcha_script === 'cap'): ?>
+                        <cap-widget class="flex justify-center mb-6"
+                            data-cap-api-endpoint="<?= htmlspecialchars($captcha_endpoint, ENT_QUOTES, 'UTF-8') ?>"></cap-widget>
+                    <?php endif; ?>
                     <button type="submit"
-                        :disabled="!captchaVerified"
+                        :disabled="!captchaVerified || <?= $captcha_config_error !== null ? 'true' : 'false' ?>"
                         :class="!captchaVerified ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'"
                         class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
                         <?= $lang['btn_view'] ?>
@@ -268,12 +383,17 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
                     <input type="text" name="honeypot" class="hidden">
                     <input type="email" name="email" required placeholder="<?= $lang['input_placeholder'] ?>"
                         class="w-full px-6 py-4 bg-gray-100 dark:bg-gray-700 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                    <div class="cf-turnstile flex justify-center"
-                        data-sitekey="<?= getenv('CF_SITE_KEY') ?>"
-                        data-callback="onCaptchaVerified"
-                        :data-theme="darkMode ? 'dark' : 'light'"></div>
+                    <?php if ($captcha_script === 'turnstile'): ?>
+                        <div class="cf-turnstile flex justify-center"
+                            data-sitekey="<?= htmlspecialchars($captcha_site_key, ENT_QUOTES, 'UTF-8') ?>"
+                            data-callback="onCaptchaVerified"
+                            :data-theme="darkMode ? 'dark' : 'light'"></div>
+                    <?php elseif ($captcha_script === 'cap'): ?>
+                        <cap-widget class="flex justify-center"
+                            data-cap-api-endpoint="<?= htmlspecialchars($captcha_endpoint, ENT_QUOTES, 'UTF-8') ?>"></cap-widget>
+                    <?php endif; ?>
                     <button type="submit"
-                        :disabled="!captchaVerified"
+                        :disabled="!captchaVerified || <?= $captcha_config_error !== null ? 'true' : 'false' ?>"
                         :class="!captchaVerified ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'"
                         class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
                         <?= $lang['btn_generate'] ?>
@@ -286,6 +406,9 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
 
             <?php if ($message): ?>
                 <p class="mt-4 text-red-500 text-center text-sm"><?= $message ?></p>
+            <?php endif; ?>
+            <?php if ($captcha_config_error !== null && !$message): ?>
+                <p class="mt-4 text-red-500 text-center text-sm"><?= htmlspecialchars($captcha_config_error, ENT_QUOTES, 'UTF-8') ?></p>
             <?php endif; ?>
 
             <?php if ($generated_links): ?>
@@ -432,12 +555,18 @@ if (!empty($slug) && $slug !== 'index.php' && $slug !== 'admin') {
             }));
         }
 
+        document.querySelectorAll('cap-widget').forEach(widget => {
+            widget.addEventListener('solve', () => {
+                window.dispatchEvent(new CustomEvent('captcha-success'));
+            });
+        });
+
         document.addEventListener('alpine:init', () => {
             Alpine.data('app', () => ({
                 darkMode: localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
                 toast: false,
                 toastMsg: '',
-                captchaVerified: false,
+                captchaVerified: <?= $captcha_provider === null ? 'true' : 'false' ?>,
                 init() {
                     this.$watch('darkMode', val => document.documentElement.classList.toggle('dark', val));
                     // Event listener for successful CAPTCHA

@@ -6,14 +6,19 @@ services:
     environment:
       # Generiere einen sicheren Key (z.B. openssl rand -base64 32)
       - APP_KEY=base64:GeneriereMichBitteNeu12345678901234567=
-      - https://mailshield.deine-domain.de
+      - APP_URL=https://mailshield.deine-domain.de
       # Admin Zugang
       - ADMIN_SITE=false
       - ADMIN_USER=admin
       - ADMIN_PASS=admin123
-      # Cloudflare Turnstile
+      # CAPTCHA: genau einen Anbieter aktivieren
+      - CF_ENABLED=true
       - CF_SITE_KEY=1x00000000000000000000AA
       - CF_SECRET_KEY=1x0000000000000000000000000000000AA
+      - CAP_ENABLED=false
+      - CAP_URL=https://captcha.example.com
+      - CAP_SITE_KEY=dein-cap-site-key
+      - CAP_SECRET_KEY=dein-cap-secret-key
       - DB_PATH=/var/www/html/data/mailshield.sqlite
     ports:
       - "8080:80"

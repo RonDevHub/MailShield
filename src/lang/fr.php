@@ -21,6 +21,7 @@ return [
     'invalid_email' => 'Oups, ce n\'est pas une adresse e-mail valide !',
     'rate_limit' => 'Ralentissez ! Trop de requêtes.',
     'captcha_fail' => 'Le captcha indique que vous êtes un robot.',
+    'captcha_config_error' => 'Erreur de configuration : activez un seul fournisseur CAPTCHA et renseignez toutes les valeurs requises dans le fichier .env.',
     'admin_title' => 'Zone Admin',
     'admin_login' => 'Connexion Admin 🛡️',
     'admin_dashboard' => 'Tableau de bord',
