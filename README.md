@@ -18,12 +18,12 @@
 </div>
 <hr>
 
-MailShield is a minimalist, resource-efficient PHP application designed to hide email addresses behind encrypted links and a Cloudflare Turnstile check. It’s the perfect solution for sharing email addresses on public websites without being targeted by scraper bots.
+MailShield is a minimalist, resource-efficient PHP application designed to hide email addresses behind encrypted links and a CAPTCHA check. Choose either Cloudflare Turnstile or self-hosted Cap.
 
 ### ✨ Features
 - **Zero-Tracking:** No cookies, no analytics.
 - **Secure:** AES-256-GCM encryption for all stored data.
-- **Bot Protection:** Integrated Cloudflare Turnstile (Captcha alternative).
+- **Bot Protection:** Cloudflare Turnstile or self-hosted Cap CAPTCHA.
 - **Lightweight:** Optimized for small home labs (minimal RAM usage).
 - **Modern UI:** Built with Tailwind CSS, including Dark Mode support.
 - **Multilingual:** Automatically detects German and English.
@@ -49,18 +49,26 @@ services:
     environment:
       # Generate a secure key (e.g., openssl rand -base64 32)
       - APP_KEY=base64:GeneriereMichBitteNeu12345678901234567=
-      - https://mailshield.deine-domain.de
+      - APP_URL=https://mailshield.deine-domain.de
       # Admin Access
       - ADMIN_SITE=false
       - ADMIN_USER=admin
       - ADMIN_PASS=admin123
-      # Cloudflare Turnstile
+      # CAPTCHA: enable exactly one provider
+      - CF_ENABLED=true
       - CF_SITE_KEY=1x00000000000000000000AA
       - CF_SECRET_KEY=1x0000000000000000000000000000000AA
+      - CAP_ENABLED=false
+      - CAP_URL=https://captcha.example.com
+      - CAP_SITE_KEY=your-cap-site-key
+      - CAP_SECRET_KEY=your-cap-secret-key
       - DB_PATH=/var/www/html/data/mailshield.sqlite
     ports:
       - "8080:80"
     volumes:
       - ./data:/var/www/html/data
 ```
+
+To use Cap instead of Turnstile, set `CF_ENABLED=false` and `CAP_ENABLED=true`. Set `CAP_URL` to the base URL of your Cap instance and provide its site and secret keys. Set both providers to `false` to disable CAPTCHA checks. Enabling both providers (or leaving required settings empty for an enabled provider) displays a configuration error and blocks form submissions.
+
 ### Created with ❤️ by RonDevHub
